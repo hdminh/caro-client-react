@@ -4,7 +4,7 @@ import { API_BASE_URL, ACCESS_TOKEN_NAME } from '../constants/apiContants';
 export const login = async (username, password) => {
     const url = API_BASE_URL + '/auth/login';
     const data = {
-        email: username,
+        username: username,
         password: password
     }
     const res = await axios.post(url, data, { 
@@ -15,13 +15,24 @@ export const login = async (username, password) => {
   return res;
 };
 
-export const signup = async (username, password, confirmpassword) => {
+export const checkRegister = async (username, password, confirmpassword) => {
+  const url = API_BASE_URL + '/auth/checkregister';
+  const data = {
+    username: username,
+    password: password,
+    confirmpassword: confirmpassword
+}
+console.log(data)
+    const res = await axios.post(url, data, {   
+        headers : {
+            'Content-Type': 'application/json'
+        }
+    });
+  return res;
+}
+
+export const signup = async (data) => {
     const url = API_BASE_URL + '/auth/register';
-    const data = {
-        email: username,
-        password: password,
-        confirmpassword: confirmpassword
-    }
     const res = await axios.post(url, data, { 
         headers : {
             'Content-Type': 'application/json'

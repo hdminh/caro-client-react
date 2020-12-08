@@ -1,7 +1,8 @@
 import React from 'react';
-import {ACCESS_TOKEN_NAME} from '../constants/apiContants';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -9,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useForm } from 'react-hook-form';
-import { signup } from '../utils/api';
+import { checkRegister, signup } from '../utils/api';
 import { withRouter } from 'react-router-dom';
 
 function RegisterForm(props) {
@@ -18,16 +19,21 @@ function RegisterForm(props) {
 
 
     const handleSubmitCheck = (e) => {
-        console.log(e)
-        signup(e.email, e.password, e.confirmpassword).then(function (response) {
-                if(response.status === 200){
-                    localStorage.setItem(ACCESS_TOKEN_NAME, response.data.token);
+        checkRegister(e.username, e.password, e.confirmpassword).then(res => {
+          if(res.status === 200){
+          signup(e).then(function (response) {
+            console.log(response)
+                if(response.status === 201){
                     redirect();
                 }
             })
             .catch(function (error) {
                 console.log(error);
             });
+        }
+      }).catch(function (error) {
+          console.log(error);
+      });
     }
     const redirect = () => {
         props.history.push('/login');
@@ -69,9 +75,9 @@ const classes = useStyles();
             inputRef={register}
             required
             fullWidth
-            id="email"
+            id="username"
             label="Email Address"
-            name="email"
+            name="username"
             autoComplete="email"
             autoFocus
           />
@@ -95,9 +101,33 @@ const classes = useStyles();
             fullWidth
             name="confirmpassword"
             label="Confirm Password"
-            type="confirmpassword"
+            type="password"
             id="confirmpassword"
             autoComplete="current-password"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            inputRef={register}
+            required
+            fullWidth
+            name="firstname"
+            label="First Name"
+            type="name"
+            id="firstname"
+            autoComplete="name"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            inputRef={register}
+            required
+            fullWidth
+            name="lastname"
+            label="Last Name"
+            type="name"
+            id="lastname"
+            autoComplete="name"
           />
           <Button
             type="submit"
@@ -108,7 +138,18 @@ const classes = useStyles();
           >
             Sign Up
           </Button>
-          
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="/login" variant="body2">
+                {"Have an account? sign In"}
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </div>
       

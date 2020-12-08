@@ -24,7 +24,7 @@ function LoginForm(props) {
     const handleSubmitCheck = (e) => {
         console.log(e)
       
-        login(e.email, e.password).then(function (response) {
+        login(e.username, e.password).then(function (response) {
                 if(response.status === 200){
                     localStorage.setItem(ACCESS_TOKEN_NAME, response.data.token);
                     redirectToHome();
@@ -74,9 +74,9 @@ const classes = useStyles();
             inputRef={register}
             required
             fullWidth
-            id="email"
+            id="username"
             label="Email Address"
-            name="email"
+            name="username"
             autoComplete="email"
             autoFocus
           />
