@@ -41,9 +41,9 @@ function LoginForm(props) {
     const responseFacebook = (response) => {
       console.log(response)
       loginFacebook(response.accessToken).then(
-        (response) => {
-          if (response.status === 200) {
-            localStorage.setItem(ACCESS_TOKEN_NAME, response.datalogin.token)
+        (res) => {
+          if (res.status === 200) {
+            localStorage.setItem(ACCESS_TOKEN_NAME, res.datalogin.token)
             redirectToHome()
           }
         },
