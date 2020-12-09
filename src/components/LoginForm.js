@@ -25,8 +25,8 @@ function LoginForm(props) {
     const onSuccessGoogle = async (response) => {
       console.log(response);
       loginGoogle(response.tokenId).then(
-        () => {
-          props.history.push("/");
+        (res) => {
+          if (res.status === 201) redirectToHome()
         },
         (error) => {
           console.log(error)
@@ -41,7 +41,7 @@ function LoginForm(props) {
     const responseFacebook = (response) => {
       loginFacebook(response.accessToken).then(
         () => {
-          props.history.push("/");
+          redirectToHome()
         },
         (error) => {
           console.log(error)

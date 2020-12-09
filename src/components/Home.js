@@ -4,7 +4,7 @@ import { ACCESS_TOKEN_NAME } from '../constants/apiContants';
 import io from 'socket.io-client'
 
 function Home(props) {
-    const ioClient = io.connect("http://127.0.0.1:8080");
+    const ioClient = io.connect("https://caro-game-api.herokuapp.com/");
     const token = localStorage.getItem(ACCESS_TOKEN_NAME)
     const [ data, setData] = useState("")
     ioClient.emit("online",{ token: token })
@@ -12,7 +12,7 @@ function Home(props) {
         ioClient.on("statusFriendChange",(data)=>{
             setData(JSON.stringify(data))
         })
-        
+
         if (!localStorage.getItem(ACCESS_TOKEN_NAME)) redirectToLogin();
         
     })

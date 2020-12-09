@@ -46,13 +46,20 @@ export const logout = () => {
 }
 
 export const loginGoogle = async (googleToken) => {
+  const data = {
+    googleToken: googleToken
+  }
+  console.log(data)
     return axios
-      .post(API_BASE_URL + "/auth/logingoogle", {
-        googleToken,
+      .post(API_BASE_URL + "/auth/logingoogle", data, { 
+        headers : {
+            'Content-Type': 'application/json'
+        }
       })
       .then((response) => {
-        if (response.data) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+        if (response.datalogin) {
+          localStorage.setItem("user", JSON.stringify(response.firstname));
+          localStorage.setItem(ACCESS_TOKEN_NAME, response.token)
           console.log(response.data)
         }
         return response.data;
@@ -66,8 +73,9 @@ export const loginGoogle = async (googleToken) => {
         accesstoken,
       })
       .then((response) => {
-        if (response.data) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+        if (response.datalogin) {
+          localStorage.setItem("user", JSON.stringify(response.firstname));
+          localStorage.setItem(ACCESS_TOKEN_NAME, response.token)
           console.log(response.data)
         }
         return response.data;
