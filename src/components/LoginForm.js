@@ -39,6 +39,7 @@ function LoginForm(props) {
   
     }
     const responseFacebook = (response) => {
+      console.log(response)
       loginFacebook(response.accessToken).then(
         () => {
           redirectToHome()
