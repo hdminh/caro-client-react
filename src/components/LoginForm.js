@@ -78,6 +78,8 @@ function LoginForm(props) {
     }
     const redirectToHome = () => {
         props.history.push('/');
+        props.setTitle("Caro - Home")
+        props.setAuth(true);
     }
 const useStyles = makeStyles((theme) => ({
   paper: {

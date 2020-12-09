@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Home from './components/Home';
@@ -13,15 +13,17 @@ import {
 } from "react-router-dom";
 
 function App() {
-  const title = "abc";
+  const [title, setTitle] = useState("Caro");
+  const [auth, setAuth] = useState(true);
+
   return (
     <Router>
     <div className="App">
-      <Header title={title}/>
+      <Header title={title} auth={auth} setAuth={setAuth} />
         <div className="container d-flex align-items-center flex-column">
           <Switch>
             <Route path="/login">
-              <LoginForm />
+              <LoginForm setAuth={setAuth} setTitle={setTitle} />
             </Route>
             <Route path="/register">
               <RegisterForm />

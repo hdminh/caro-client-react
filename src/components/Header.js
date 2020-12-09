@@ -14,9 +14,10 @@ import Menu from '@material-ui/core/Menu';
 
 function Header(props) {
 
-    useEffect(() => {
-      if (localStorage.getItem(ACCESS_TOKEN_NAME)) setAuth(true)
-    }, [])
+  useEffect(() => {
+    if (!localStorage.getItem(ACCESS_TOKEN_NAME)) props.setAuth(false);
+    
+})
 
     const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,9 +31,7 @@ function Header(props) {
     },
     }));
     const classes = useStyles();
-    const [auth, setAuth] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
     const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -44,7 +43,7 @@ function Header(props) {
     const handleLogout = () => {
         localStorage.removeItem(ACCESS_TOKEN_NAME)
         props.history.push('/login')
-        setAuth(false)
+        props.setAuth(false)
     }
 
     return (
@@ -55,9 +54,9 @@ function Header(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Caro
+            ABC
           </Typography>
-          {auth && (
+          {props.auth && (
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -80,7 +79,7 @@ function Header(props) {
                   vertical: 'top',
                   horizontal: 'right',
                 }}
-                open={open}
+                open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
