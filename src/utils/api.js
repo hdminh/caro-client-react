@@ -68,9 +68,15 @@ export const loginGoogle = async (googleToken) => {
   }
 
   export const loginFacebook = async(accesstoken) => {
+    const data = {
+      accesstoken: accesstoken
+    }
     return axios
       .post(API_BASE_URL + "/auth/loginfacebook", {
-        accesstoken,
+        data,
+        headers : {
+          'Content-Type': 'application/json'
+        }
       })
       .then((response) => {
         if (response.datalogin) {
