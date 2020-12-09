@@ -141,7 +141,7 @@ const classes = useStyles();
           <GoogleLogin
             size="small"
             fullWidth
-            clientId= "316252754883-oj6dbh1drjc89k587l7s9qid47c0k6db.apps.googleusercontent.com"
+            clientId= "316252754883-uijdm91atqp7dunbbukpii5bkele0ttg.apps.googleusercontent.com"
             buttonText="LOGIN WITH GOOGLE"
             onSuccess={onSuccessGoogle}
             onFailure={onFailureGoogle}
