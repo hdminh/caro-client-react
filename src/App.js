@@ -21,7 +21,7 @@ function App() {
   return (
     <Router>
     <div className="App">
-      <Header title={title} auth={auth} setAuth={setAuth} />
+      <Header title={title} auth={auth} setAuth={setAuth} setTitle={setTitle} />
         <div className="container d-flex align-items-center flex-column">
         {error && <Alert severity="error">{error}</Alert>}
           <Switch>
