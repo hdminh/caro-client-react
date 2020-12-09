@@ -26,7 +26,11 @@ function LoginForm(props) {
       console.log(response);
       loginGoogle(response.tokenId).then(
         (res) => {
-          if (res.status === 201) redirectToHome()
+          if (res.status === 200) {
+            localStorage.setItem("user", JSON.stringify(response.data.datalogin.firstname));
+            localStorage.setItem(ACCESS_TOKEN_NAME, response.data.datalogin.token)
+            redirectToHome()
+          }
         },
         (error) => {
           console.log(error)
@@ -44,7 +48,8 @@ function LoginForm(props) {
         (res) => {
           console.log(res)
           if (res.status === 200) {
-            localStorage.setItem(ACCESS_TOKEN_NAME, res.datalogin.token)
+            localStorage.setItem("user", JSON.stringify(response.data.datalogin.firstname));
+            localStorage.setItem(ACCESS_TOKEN_NAME, res.data.datalogin.token)
             redirectToHome()
           }
         },
@@ -61,6 +66,7 @@ function LoginForm(props) {
         console.log(e)
       
         login(e.username, e.password).then(function (response) {
+          console.log(response)
                 if(response.status === 200){
                     localStorage.setItem(ACCESS_TOKEN_NAME, response.data.token);
                     redirectToHome();
