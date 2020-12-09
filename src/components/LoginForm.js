@@ -13,13 +13,44 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useForm, Controller} from 'react-hook-form';
-import { login } from '../utils/api';
+import { login, loginGoogle, loginFacebook } from '../utils/api';
 import { withRouter } from 'react-router-dom';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 function LoginForm(props) {
 
     const {register, handleSubmit, control} = useForm();
 
+    const onSuccessGoogle = async (response) => {
+      console.log(response);
+      loginGoogle(response.tokenId).then(
+        () => {
+          props.history.push("/");
+        },
+        (error) => {
+          console.log(error)
+        }
+      );
+    }
+    const onFailureGoogle = (response) => {
+      console.log("failure" + response);
+      console.log(response);
+  
+    }
+    const responseFacebook = (response) => {
+      loginFacebook(response.accessToken).then(
+        () => {
+          props.history.push("/");
+        },
+        (error) => {
+          console.log(error)
+        }
+      );
+    }
+    const componentClicked =() =>{
+      console.log("click");
+    }
 
     const handleSubmitCheck = (e) => {
         console.log(e)
@@ -97,6 +128,7 @@ const classes = useStyles();
               <Controller as={Checkbox} control={control} name="remember" color="primary" defaultValue={false}/>}
             label="Remember me"
           />
+          
           <Button
             type="submit"
             fullWidth
@@ -106,6 +138,28 @@ const classes = useStyles();
           >
             Sign In
           </Button>
+          <GoogleLogin
+            size="small"
+            fullWidth
+            clientId= "316252754883-oj6dbh1drjc89k587l7s9qid47c0k6db.apps.googleusercontent.com"
+            buttonText="LOGIN WITH GOOGLE"
+            onSuccess={onSuccessGoogle}
+            onFailure={onFailureGoogle}
+            cookiePolicy={'single_host_origin'}
+          />
+            <br/> 
+            <br/> 
+          <FacebookLogin
+            size="small"
+            type="button"
+            fullWidth
+            variant="contained"
+            appId="4063580557003301"
+            fields="name,email,picture"
+            icon="fa-facebook"
+            onClick={componentClicked}
+            callback={responseFacebook} />
+            <br/>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
