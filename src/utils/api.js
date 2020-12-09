@@ -71,21 +71,14 @@ export const loginGoogle = async (googleToken) => {
     const data = {
       accesstoken: accesstoken
     }
-    return axios
+    const res = await axios
       .post(API_BASE_URL + "/auth/loginfacebook",
         data, {
         headers : {
           'Content-Type': 'application/json'
         }
-      })
-      .then((response) => {
-        if (response.datalogin) {
-          localStorage.setItem("user", JSON.stringify(response.datalogin.firstname));
-          localStorage.setItem(ACCESS_TOKEN_NAME, response.datalogin.token)
-          console.log(response.datalogin)
-        }
-        return response;
       });
+    return res;
 
   }
 
