@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { ACCESS_TOKEN_NAME } from '../constants/apiContants';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,6 +14,10 @@ import Menu from '@material-ui/core/Menu';
 
 function Header(props) {
 
+    useEffect(() => {
+      if (localStorage.getItem(ACCESS_TOKEN_NAME)) setAuth(true)
+    }, [])
+
     const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -26,10 +30,9 @@ function Header(props) {
     },
     }));
     const classes = useStyles();
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [auth, setAuth] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-  
     const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -87,6 +90,7 @@ function Header(props) {
           )}
         </Toolbar>
       </AppBar>
+
     </div>
   );
 }

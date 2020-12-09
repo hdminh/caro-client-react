@@ -58,11 +58,11 @@ export const loginGoogle = async (googleToken) => {
       })
       .then((response) => {
         if (response.datalogin) {
-          localStorage.setItem("user", JSON.stringify(response.firstname));
-          localStorage.setItem(ACCESS_TOKEN_NAME, response.token)
-          console.log(response.data)
+          localStorage.setItem("user", JSON.stringify(response.datalogin.firstname));
+          localStorage.setItem(ACCESS_TOKEN_NAME, response.datalogin.token)
+          console.log(response.datalogin)
         }
-        return response.data;
+        return response;
       });
 
   }
@@ -80,11 +80,11 @@ export const loginGoogle = async (googleToken) => {
       })
       .then((response) => {
         if (response.datalogin) {
-          localStorage.setItem("user", JSON.stringify(response.firstname));
-          localStorage.setItem(ACCESS_TOKEN_NAME, response.token)
-          console.log(response.data)
+          localStorage.setItem("user", JSON.stringify(response.datalogin.firstname));
+          localStorage.setItem(ACCESS_TOKEN_NAME, response.datalogin.token)
+          console.log(response.datalogin)
         }
-        return response.data;
+        return response;
       });
 
   }
