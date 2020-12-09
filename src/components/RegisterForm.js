@@ -28,15 +28,16 @@ function RegisterForm(props) {
                 }
             })
             .catch(function (error) {
-                console.log(error);
+              props.setError(error)
             });
         }
       }).catch(function (error) {
-          console.log(error);
+        props.setError(error.message)
       });
     }
     const redirect = () => {
-        props.history.push('/login');
+      props.setError(null)
+      props.history.push('/login');
     }
 const useStyles = makeStyles((theme) => ({
   paper: {

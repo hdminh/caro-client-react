@@ -33,13 +33,14 @@ function LoginForm(props) {
           }
         },
         (error) => {
-          console.log(error)
+          props.setError(error.message)
         }
       );
     }
     const onFailureGoogle = (response) => {
       console.log("failure" + response);
       console.log(response);
+      props.setError("Login Google failed!")
   
     }
     const responseFacebook = (responseFB) => {
@@ -54,7 +55,7 @@ function LoginForm(props) {
           }
         },
         (error) => {
-          console.log(error)
+          props.setError(error.message)
         }
       );
     }
@@ -65,19 +66,21 @@ function LoginForm(props) {
     const handleSubmitCheck = (e) => {
         console.log(e)
       
-        login(e.username, e.password).then(function (response) {
+        login(e.username, e.password).then((response) => {
           console.log(response)
                 if(response.status === 200){
                     localStorage.setItem(ACCESS_TOKEN_NAME, response.data.token);
                     redirectToHome();
                 }
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch((error) => {
+              props.setError(error.message)
+              
             });
     }
     const redirectToHome = () => {
         props.history.push('/');
+        props.setError(null)
         props.setTitle("Caro - Home")
         props.setAuth(true);
     }

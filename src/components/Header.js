@@ -46,6 +46,8 @@ function Header(props) {
         props.setAuth(false)
     }
 
+    const titleApp = props.title;
+
     return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -54,7 +56,7 @@ function Header(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            ABC
+              {titleApp}
           </Typography>
           {props.auth && (
             <div>

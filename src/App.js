@@ -5,6 +5,7 @@ import Home from './components/Home';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import PrivateRoute from './utils/PrivateRoute';
+import Alert from '@material-ui/lab/Alert';
 
 import {
   BrowserRouter as Router,
@@ -15,18 +16,20 @@ import {
 function App() {
   const [title, setTitle] = useState("Caro");
   const [auth, setAuth] = useState(true);
+  const [error, setError] = useState(null);
 
   return (
     <Router>
     <div className="App">
       <Header title={title} auth={auth} setAuth={setAuth} />
         <div className="container d-flex align-items-center flex-column">
+        {error && <Alert severity="error">{error}</Alert>}
           <Switch>
             <Route path="/login">
-              <LoginForm setAuth={setAuth} setTitle={setTitle} />
+              <LoginForm setAuth={setAuth} setTitle={setTitle} setError={setError} />
             </Route>
             <Route path="/register">
-              <RegisterForm />
+              <RegisterForm setError={setError} />
             </Route>
             <PrivateRoute path="/" exact>
               <Home/>
