@@ -22,13 +22,13 @@ function LoginForm(props) {
 
     const {register, handleSubmit, control} = useForm();
 
-    const onSuccessGoogle = async (response) => {
-      console.log(response);
-      loginGoogle(response.tokenId).then(
+    const onSuccessGoogle = async (responseGG) => {
+      console.log(responseGG);
+      loginGoogle(responseGG.tokenId).then(
         (res) => {
           if (res.status === 200) {
-            localStorage.setItem("user", JSON.stringify(response.data.datalogin.firstname));
-            localStorage.setItem(ACCESS_TOKEN_NAME, response.data.datalogin.token)
+            localStorage.setItem("user", JSON.stringify(res.data.datalogin.firstname));
+            localStorage.setItem(ACCESS_TOKEN_NAME, res.data.datalogin.token)
             redirectToHome()
           }
         },
@@ -42,13 +42,13 @@ function LoginForm(props) {
       console.log(response);
   
     }
-    const responseFacebook = (response) => {
-      console.log(response)
-      loginFacebook(response.accessToken).then(
+    const responseFacebook = (responseFB) => {
+      console.log(responseFB)
+      loginFacebook(responseFB.accessToken).then(
         (res) => {
           console.log(res)
           if (res.status === 200) {
-            localStorage.setItem("user", JSON.stringify(response.data.datalogin.firstname));
+            localStorage.setItem("user", JSON.stringify(res.data.datalogin.firstname));
             localStorage.setItem(ACCESS_TOKEN_NAME, res.data.datalogin.token)
             redirectToHome()
           }
