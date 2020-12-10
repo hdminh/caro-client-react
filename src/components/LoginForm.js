@@ -69,7 +69,7 @@ function LoginForm(props) {
         login(e.username, e.password).then((response) => {
           console.log(response)
                 if(response.status === 200){
-                    localStorage.setItem(ACCESS_TOKEN_NAME, response.data.token);
+                    localStorage.setItem(ACCESS_TOKEN_NAME, response.data.datalogin.token);
                     redirectToHome();
                 }
             })
