@@ -13,16 +13,14 @@ function Room(props) {
     //   ioClient.emit("online",{ token: token })
     // }
 
-    const [data, setData] = useState([]);
+    const [player, setPlayer] = useState([])
 
     const setListUser = (() => {
         console.log('id ', props.match.params.id)
         getRoomInfo(props.match.params.id).then(result => {
             console.log(result.data.players)
-            setData(data => [...data, {
-              id: data.length,
-              value: 1
-            }])
+            setPlayer(result.data.players)
+            console.log('lllll', player)
         })
     })
 
@@ -36,7 +34,7 @@ function Room(props) {
   }
   return (
     <div className="App">
-        {data}
+      {player.map((d) => <li key={d.firstname}>{d.firstname}</li>)}
     </div>
   );
 }
