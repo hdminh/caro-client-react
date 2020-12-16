@@ -6,30 +6,32 @@ import { withRouter } from 'react-router-dom';
 import {useForm } from 'react-hook-form';
 import { ACCESS_TOKEN_NAME } from '../constants/apiContants';
 import { joinRoom, addRoom } from '../utils/api';
-import io from 'socket.io-client'
+//import io from 'socket.io-client'
 
-const ioClient = io.connect("https://caro-game-api.herokuapp.com/");
+//const ioClient = io.connect("https://caro-game-api.herokuapp.com/");
 //const ioClient = io.connect("http://127.0.0.1:8080");
 
 function Home(props) {
-    const token = localStorage.getItem(ACCESS_TOKEN_NAME)
-    if(token){
-      ioClient.emit("online",{ token: token })
-    }
+      // const token = localStorage.getItem(ACCESS_TOKEN_NAME)
+      // if(token){
+      //   ioClient.emit("online",{ token: token })
+      // }
     const {register, handleSubmit} = useForm();
 
     const handleJoin = ((data) => {
       joinRoom(data.id).then(result => {
-        if (result.status === 200) {
-          props.history.push('/room/' + data.id);
+        if (result.status < 400) {
+          console.log(result)
+          props.history.push('/room/' + result.data._id);
         }
       })
     })
 
     const handleAddNew = (() => {
       addRoom().then(result => {
-        if (result.status === 201) {
-          props.history.push('/room/' + result.data.idRoom);
+        if (result.status < 400) {
+          console.log(result)
+          props.history.push('/room/' + result.data._id);
         }
       })
     })
