@@ -18,7 +18,7 @@ function Room(props) {
         console.log('id ', props.match.params.id)
         getRoomInfo(props.match.params.id).then(result => {
             console.log(result)
-            setData(result.result.players)
+            setData(result.players)
         })
     })
 

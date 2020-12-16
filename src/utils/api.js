@@ -104,15 +104,16 @@ export const loginGoogle = async (googleToken) => {
   }
 
   export const getRoomInfo = async(id) => {
+    const url = API_BASE_URL + "/room/" + id;
+    console.log(localStorage.getItem(ACCESS_TOKEN_NAME))
     const res = await axios
-      .get(API_BASE_URL + "/room/" + id, {
+      .get(url, {
         headers : {
           'auth-token': localStorage.getItem(ACCESS_TOKEN_NAME),
           'Content-Type': 'application/json'
         }
       });
     console.log(res)
-
     return res;
 
   }

@@ -29,9 +29,8 @@ function Home(props) {
 
     const handleAddNew = (() => {
       addRoom().then(result => {
-        if (result.status === 200) {
-          const id = result.result.data.idRoom;
-          props.history.push('/room/' + id);
+        if (result.status === 201) {
+          props.history.push('/room/' + result.data.idRoom);
         }
       })
     })
