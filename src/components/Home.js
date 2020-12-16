@@ -21,7 +21,6 @@ function Home(props) {
     const handleJoin = ((data) => {
       joinRoom(data.id).then(result => {
         if (result.status === 200) {
-          props.setRoom(data.id)
           props.history.push('/room/' + data.id);
         }
       })
