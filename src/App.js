@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Home from './components/Home';
+import Room from './components/Room';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import PrivateRoute from './utils/PrivateRoute';
@@ -33,6 +34,9 @@ function App() {
             </Route>
             <PrivateRoute path="/" exact>
               <Home/>
+            </PrivateRoute>
+            <PrivateRoute path="/room/:id" >
+              <Room/>
             </PrivateRoute>
           </Switch>
         </div>
