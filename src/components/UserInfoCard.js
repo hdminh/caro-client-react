@@ -20,17 +20,14 @@ const useStyles = makeStyles({
 export default function UserCard(props) {
     const classes = useStyles();
 
-    const [user, setUser] = useState({
-        name: "",
-        avatar: "",
-        registerDate: ""
+    const [user, setUser] = useState(null)
+
+    const updateUser = ((user) => {
+        setUser(user)
     })
+
     useEffect(() => {
-        setUser({
-            name: props.name,
-            avatar: props.avatar,
-            registerDate: props.date
-        })
+        updateUser(props.user)
     })
 
     return (

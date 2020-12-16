@@ -2,25 +2,16 @@ import React,{ useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ACCESS_TOKEN_NAME } from '../constants/apiContants';
 import { getRoomInfo } from '../utils/api';
-//import io from 'socket.io-client'
-
-//const ioClient = io.connect("https://caro-game-api.herokuapp.com/");
-//const ioClient = io.connect("http://127.0.0.1:8080");
+import UserInfoCard from '../components/UserInfoCard';
 
 function Room(props) {
-    // const token = localStorage.getItem(ACCESS_TOKEN_NAME)
-    // if(token){
-    //   ioClient.emit("online",{ token: token })
-    // }
 
-    const [player, setPlayer] = useState([])
+    const [players, setPlayers] = useState([])
 
     const setListUser = (() => {
-        console.log('id ', props.match.params.id)
         getRoomInfo(props.match.params.id).then(result => {
-            console.log(result.data.players)
-            setPlayer(result.data.players)
-            console.log('lllll', player)
+            setPlayers(result.data.players)
+            console.log('list player', players)
         })
     })
 
@@ -34,7 +25,7 @@ function Room(props) {
   }
   return (
     <div className="App">
-      {player.map((d) => <li key={d.firstname}>{d.firstname}</li>)}
+      {players.map((player) => <UserInfoCard user={player} />)}
     </div>
   );
 }
