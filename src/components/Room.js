@@ -11,6 +11,7 @@ function Room(props) {
     const setListUser = (() => {
         getRoomInfo(props.match.params.id).then(result => {
             setPlayers(result.data.players)
+            props.setTitle(result.data.room.idRoom)
         })
     })
 
@@ -24,7 +25,7 @@ function Room(props) {
   }
   return (
     <div className="App">
-      {players.map((player) => <UserInfoCard user={player} />)}
+      {players.map((player) => <UserInfoCard key={player._id} user={player} />)}
     </div>
   );
 }

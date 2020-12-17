@@ -36,7 +36,7 @@ function App() {
               <Home/>
             </PrivateRoute>
             <PrivateRoute path="/room/:id" >
-              <Room/>
+              <Room setTitle={setTitle}/>
             </PrivateRoute>
           </Switch>
         </div>
