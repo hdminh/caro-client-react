@@ -105,7 +105,6 @@ export const loginGoogle = async (googleToken) => {
 
   export const getRoomInfo = async(id) => {
     const url = API_BASE_URL + "/room/" + id;
-    console.log(localStorage.getItem(ACCESS_TOKEN_NAME))
     const res = await axios
       .get(url, {
         headers : {

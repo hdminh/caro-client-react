@@ -30,7 +30,6 @@ function Home(props) {
     const handleAddNew = (() => {
       addRoom().then(result => {
         if (result.status < 400) {
-          console.log(result)
           props.history.push('/room/' + result.data._id);
         }
       })

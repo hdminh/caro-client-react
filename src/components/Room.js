@@ -11,7 +11,6 @@ function Room(props) {
     const setListUser = (() => {
         getRoomInfo(props.match.params.id).then(result => {
             setPlayers(result.data.players)
-            console.log('list player', players)
         })
     })
 

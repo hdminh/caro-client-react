@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -20,30 +20,21 @@ const useStyles = makeStyles({
 export default function UserCard(props) {
     const classes = useStyles();
 
-    const [user, setUser] = useState(null)
-
-    const updateUser = ((user) => {
-        setUser(user)
-    })
-
-    useEffect(() => {
-        updateUser(props.user)
-    })
-
     return (
-    <Card className={classes.root}>
+      <div>
+      {props.user !== null && <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={user.avatar}
-          title={user.name}
+          image={props.user.avatar}
+          title={props.user.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {user.name}
+            {props.user.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {user.registerDate}
+            {props.user.registerDate}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -53,5 +44,7 @@ export default function UserCard(props) {
         </Button>
       </CardActions>
     </Card>
+    }
+    </div>
   );
 }
