@@ -43,7 +43,7 @@ export default function UserCard(props) {
             {user.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {user.registerDate}
+            {new Date(user.registerDate).toLocaleDateString}
           </Typography>
         </CardContent>
       </CardActionArea>

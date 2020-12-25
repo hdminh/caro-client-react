@@ -21,24 +21,33 @@ function Home(props) {
     const handleJoin = ((data) => {
       joinRoom(data.id).then(result => {
         if (result.status < 400) {
+          props.setError(null)
           console.log(result)
           props.history.push('/room/' + result.data._id);
+        } else {
+          props.setError("Error finding room")
         }
+      }).catch((error) => {
+        props.setError(error.message)
       })
     })
 
     const handleAddNew = (() => {
       addRoom().then(result => {
         if (result.status < 400) {
+          props.setError(null)
           console.log(result)
           props.history.push('/room/' + result.data._id);
+        } else {
+          props.setError("Error add new room")
         }
+      }).catch((error) => {
+        props.setError(error.message)
       })
     })
 
     useEffect(() => {
         if (!localStorage.getItem(ACCESS_TOKEN_NAME)) redirectToLogin();  
-
     })
   function redirectToLogin() {
     props.history.push('/login');

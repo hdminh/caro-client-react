@@ -33,10 +33,10 @@ function App() {
               <RegisterForm setError={setError} />
             </Route>
             <PrivateRoute path="/" exact>
-              <Home/>
+              <Home setError={setError}/>
             </PrivateRoute>
             <PrivateRoute path="/room/:id" >
-              <Room/>
+              <Room setError={setError}/>
             </PrivateRoute>
           </Switch>
         </div>
