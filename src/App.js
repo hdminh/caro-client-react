@@ -36,7 +36,7 @@ function App() {
               <Home setError={setError}/>
             </PrivateRoute>
             <PrivateRoute path="/room/:id" >
-              <Room setError={setError}/>
+              <Room setTitle={setTitle} setError={setError}/>
             </PrivateRoute>
           </Switch>
         </div>

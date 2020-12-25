@@ -13,9 +13,11 @@ function Room(props) {
           if (result.status < 400) {
             setPlayers(result.data.players)
             console.log('list player', players)
+            props.setTitle(result.data.room.idRoom)
           }
         }).catch((error) => {
           props.setError(error.message)
+
         })
     })
 
@@ -29,7 +31,8 @@ function Room(props) {
   }
   return (
     <div className="App">
-      {players !== null && players.map((player) => <UserInfoCard user={player} />)}
+      {players !== null && players.map((player) => <UserInfoCard key={player._id} user={player} />)}
+
     </div>
   );
 }
