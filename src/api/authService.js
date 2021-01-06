@@ -72,5 +72,3 @@ export const loginGoogle = async (googleToken) => {
     return res;
 
   }
-
-  

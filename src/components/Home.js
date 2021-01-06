@@ -5,11 +5,11 @@ import TextField from '@material-ui/core/TextField';
 import { withRouter } from 'react-router-dom';
 import {useForm } from 'react-hook-form';
 import { ACCESS_TOKEN_NAME } from '../constants/apiContants';
-import { joinRoom, addRoom } from '../utils/api';
-//import io from 'socket.io-client'
+import { joinRoom, addRoom } from '../api/roomService';
+import {joinRoomSock,addRoomScok} from '../socket/roomSocket';
+// import io from 'socket.io-client'
 
 //const ioClient = io.connect("https://caro-game-api.herokuapp.com/");
-//const ioClient = io.connect("http://127.0.0.1:8080");
 
 function Home(props) {
       // const token = localStorage.getItem(ACCESS_TOKEN_NAME)
@@ -22,6 +22,7 @@ function Home(props) {
       joinRoom(data.id).then(result => {
         if (result.status < 400) {
           props.setError(null)
+          joinRoomSock(result.data._id);
           console.log(result)
           props.history.push('/room/' + result.data._id);
         } else {
@@ -38,6 +39,8 @@ function Home(props) {
           props.setError(null)
           console.log(result)
           props.history.push('/room/' + result.data._id);
+          // joinRoomSock(result.data._id);
+          joinRoomSock(result.data._id);
         } else {
           props.setError("Error add new room")
         }
@@ -45,6 +48,10 @@ function Home(props) {
         props.setError(error.message)
       })
     })
+
+    // const  joinRoomSock=((data) =>{
+    //   ioClient.emit("join_room",{data});
+    // })
 
     useEffect(() => {
         if (!localStorage.getItem(ACCESS_TOKEN_NAME)) redirectToLogin();  

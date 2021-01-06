@@ -19,6 +19,9 @@ const useStyles = makeStyles({
 
 export default function UserCard(props) {
     const classes = useStyles();
+    const handleButtonReady = () =>{
+      props.joinMatchSock(props.user);
+    }
 
     return (
       <div>
@@ -33,13 +36,16 @@ export default function UserCard(props) {
           <Typography gutterBottom variant="h5" component="h2">
             {props.user.name}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {new Date(user.registerDate).toLocaleDateString}
+          <Typography variant="body2" color="textSecondary" component="p">aaaa
+            {/* {new Date(user.registerDate).toLocaleDateString} */}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="small" 
+        color="primary"
+        onclick={handleButtonReady}
+        >
           Ready
         </Button>
       </CardActions>
