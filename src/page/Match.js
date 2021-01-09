@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import {useParams} from 'react-router-dom';
 import '../App.css';
 import Board from '../components/Board';
-import {handleClickInMatch} from '../socket/matchSocket';
-import {ioClient} from '../socket/index';
+import { handleClickInMatch } from '../socket/matchSocket';
+import { ioClient } from '../socket/index';
+import { playMatch } from '../api/matchService';
 import { ContactSupportOutlined } from '@material-ui/icons';
 // import  calculateWinner  from '../api/GameService';
 
 
-function Game(props) {
+function Match() {
   const [history, setHistory] = useState([{ squares: Array(400).fill(null) }]);
   const [stepNumber, setStepNumber] = useState(0);
   const [xIsNext, setXIsNext] = useState(true);
-  const [canMove,setCanMove] =useState(true);
-  const[oponentMove,setOponentMove]=useState();
+  const [canMove, setCanMove] = useState(true);
+  const [oponentMove, setOponentMove] = useState();
+  let { id } = useParams();
+  // const matchId= props.match.params.id;
 
   //   function jumpTo(step) {
   //   setStepNumber(step);
@@ -20,7 +24,7 @@ function Game(props) {
   // }
 
 
-  function handleNewMove(i){
+  function handleNewMove(i) {
     const clickhistory = history.slice(0, stepNumber + 1);
     const current = clickhistory[clickhistory.length - 1];
     const squares = current.squares.slice();
@@ -40,61 +44,61 @@ function Game(props) {
     ]));
     setStepNumber(clickhistory.length);
   }
+
+
   ioClient.off("opponent_move");
-  ioClient.on("opponent_move",(data) =>{
+  ioClient.on("opponent_move", (data) => {
     console.log(data);
+    console.log("opmove");
     // console.log(ioClient);
     // setOponentMove(JSON.stringify(data.i));
     // console.log(oponentMove);
     handleNewMove(JSON.stringify(data.i));
     setCanMove(true);
   })
- 
 
-//    useEffect(() => {
-
-
-      
-//  },[])
-
-
-  const  handleClick= (i) => {
-      if(canMove){
-      handleClickInMatch(i);
-      handleNewMove(i);
+  const handleClick = async (i) => {
+    if (canMove) {
+      console.log("id la"+ id);
+      const result = await playMatch(id,i);
+      console.log(result);
+      if (!result.error) {
+        handleClickInMatch(i);
+        handleNewMove(i);
         setCanMove(false);
       }
+    }
   }
 
   //move
-  const current = history[history.length-1];
-//   console.log(current);
-//   const squares = current.squares.slice();
-//   const moves = history.map((step, move) => {
-//     const latestMoveSquare = step.latestMoveSquare;
-//     const col = 1 + latestMoveSquare % 20;
-//     const row = 1 + Math.floor(latestMoveSquare / 20);
-//     const desc = move ?
-//       `Go to move #${move} (${col}, ${row})` :
-//       'Go to game start';
-//     return (
-//       <li key={move}>
-//         <button className={move === stepNumber ? 'bold-selected-item' : ''}
-//           onClick={() => jumpTo(move)}>{desc}</button>
-//       </li>
-//     );
-//   });
+  const current = history[history.length - 1];
+  //   console.log(current);
+  //   const squares = current.squares.slice();
+  //   const moves = history.map((step, move) => {
+  //     const latestMoveSquare = step.latestMoveSquare;
+  //     const col = 1 + latestMoveSquare % 20;
+  //     const row = 1 + Math.floor(latestMoveSquare / 20);
+  //     const desc = move ?
+  //       `Go to move #${move} (${col}, ${row})` :
+  //       'Go to game start';
+  //     return (
+  //       <li key={move}>
+  //         <button className={move === stepNumber ? 'bold-selected-item' : ''}
+  //           onClick={() => jumpTo(move)}>{desc}</button>
+  //       </li>
+  //     );
+  //   });
 
 
-  
+
   return (
     <div className="game">
       <div className="game-board">
         <Board
           squares={current.squares}
           onClick={(i) => handleClick(i)}
-          />
-          {/* winLine={winStruct.line} /> */}
+        />
+        {/* winLine={winStruct.line} /> */}
       </div>
       <div className="game-info">
         {/* <div>{status}</div> */}
@@ -109,4 +113,4 @@ function Game(props) {
 
 
 
-export default Game;
+export default Match;

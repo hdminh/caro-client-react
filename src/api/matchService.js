@@ -4,7 +4,7 @@ import { API_BASE_URL, ACCESS_TOKEN_NAME } from '../constants/apiContants';
 //id room
 export const createMatch = async(id) => {
     const data = {
-      id: Number(id)
+      id:id
     }
     console.log(data)
     const res = await axios
@@ -19,9 +19,11 @@ export const createMatch = async(id) => {
 
   }
 
-  export const matchPlay = async (matchId, x,y) => {
+  export const playMatch = async (matchId, i) => {
     const data = {
-      id: Number(matchID)
+      id: matchId,
+      x_axis:Math.round(i/20),
+      y_axis:i%20
     }
     const res = await axios
       .post(API_BASE_URL + "/match/play",

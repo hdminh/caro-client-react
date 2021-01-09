@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { ACCESS_TOKEN_NAME } from '../constants/apiContants';
 import { getRoomInfo } from '../api/roomService';
 import UserInfoCard from '../components/UserInfoCard';
-import {joinMatchSock} from '../socket/matchSocket';
+import {joinMatchSock,createdMatchSock} from '../socket/matchSocket';
+import {createMatch} from '../api/matchService';
 import {newRoomPlayerSock} from '../socket/roomSocket';
 import {ioClient} from '../socket/index';
 import Button from '@material-ui/core/Button';
@@ -15,14 +16,18 @@ import {getUserToken} from '../api/authService';
 function Room(props) {
     const [players, setPlayers] = useState([]);
     const [roomId,setRoomId] =useState();
+    let room_Id = null;
 
 
     const setListUser = (() => {
         getRoomInfo(props.match.params.id).then(result => {
           if (result.status < 400) {
             setPlayers(result.data.players)
-            console.log('list player', result.data.players)
+            console.log('list player', result.data)
             setRoomId(result.data.room.idRoom);
+            room_Id=result.data.room._id;
+            console.log('rome _id', room_Id)
+
             props.setTitle(result.data.room.idRoom);
           }
         }).catch((error) => {
@@ -38,6 +43,7 @@ function Room(props) {
     //    console.log(ioClient);
     //    setPlayers([]);
     //  })
+    
 
 
     useEffect(() => {
@@ -45,9 +51,19 @@ function Room(props) {
         //  newRoomPlayerSock();
         // setListUser();  
         setListUser();  
+        ioClient.on("create_match",async (roomId) =>{
+          console.log("creating match");
+          console.log(room_Id);
+         const result = await createMatch(room_Id);
+         if(!result.error){
+          createdMatchSock(result.data._id);
+         }
+
+
+        })
         ioClient.on("start_game",(data) =>{
           console.log(data);
-         props.history.push('/match');
+         props.history.push('/match/'+data);
           // setPlayers([]);
         })
         ioClient.on("new_room_player",(data) =>{
@@ -55,7 +71,6 @@ function Room(props) {
            console.log(data);
            // setPlayers([]);
          })
-
       
         // ioClient.on("start_game",(data) =>{
         //    console.log(data);
