@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import Board from './Board';
+import Board from '../components/Board';
 import {handleClickInMatch} from '../socket/matchSocket';
 import {ioClient} from '../socket/index';
 import { ContactSupportOutlined } from '@material-ui/icons';

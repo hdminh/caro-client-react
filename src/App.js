@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
 import Header from './components/Header';
-import Home from './components/Home';
-import Room from './components/Room';
-import Match from './components/Match';
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
+import Home from './page/Home';
+import Room from './page/Room';
+import Match from './page/Match';
+import LoginForm from './page/LoginForm';
+import RegisterForm from './page/RegisterForm';
 import PrivateRoute from './utils/PrivateRoute';
 import Alert from '@material-ui/lab/Alert';
 

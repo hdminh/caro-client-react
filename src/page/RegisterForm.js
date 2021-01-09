@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useForm } from 'react-hook-form';
-import { checkRegister, signup } from '../utils/api';
+import { checkRegister, signup } from '../api/authService';
 import { withRouter } from 'react-router-dom';
 
 function RegisterForm(props) {

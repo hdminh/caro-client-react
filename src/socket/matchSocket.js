@@ -1,8 +1,8 @@
 import {ioClient} from './index';
 
 //data is userid
-export const joinMatchSock =(data) =>{
-    ioClient.emit("join_match","12");
+export const joinMatchSock =(roomId) =>{
+    ioClient.emit("join_match",roomId);
 }
 
 // i is location in 1D

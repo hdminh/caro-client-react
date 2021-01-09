@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useForm, Controller} from 'react-hook-form';
-import { login, loginGoogle, loginFacebook } from '../utils/api';
+import { login, loginGoogle, loginFacebook } from '../api/authService';
 import { withRouter } from 'react-router-dom';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';

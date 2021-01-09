@@ -14,15 +14,16 @@ import {getUserToken} from '../api/authService';
 
 function Room(props) {
     const [players, setPlayers] = useState([]);
-    let idRoom=null;
+    const [roomId,setRoomId] =useState();
 
 
     const setListUser = (() => {
         getRoomInfo(props.match.params.id).then(result => {
           if (result.status < 400) {
             setPlayers(result.data.players)
-            console.log('list player', players)
-            props.setTitle(result.data.room.idRoom)
+            console.log('list player', result.data.players)
+            setRoomId(result.data.room.idRoom);
+            props.setTitle(result.data.room.idRoom);
           }
         }).catch((error) => {
           props.setError(error.message)
@@ -47,7 +48,6 @@ function Room(props) {
         ioClient.on("start_game",(data) =>{
           console.log(data);
          props.history.push('/match');
-    
           // setPlayers([]);
         })
         ioClient.on("new_room_player",(data) =>{
@@ -83,20 +83,22 @@ function Room(props) {
   // }
 
   const handleReady= () =>{
-    const userToken=getUserToken();
-    joinMatchSock(userToken);
+    // const userToken=getUserToken();
+    joinMatchSock(roomId);
   }
 
   return (
     <div className="App">
-         <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-          onClick={handleReady}
-          >
-            Ready
-          </Button>
+      { roomId !== null && 
+      <Button
+      type="submit"
+      variant="contained"
+      color="primary"
+    onClick={handleReady}
+    >
+      Ready
+    </Button>}
+         
           
       {players !== null && players.map((player) => <UserInfoCard key={player._id} user={player} />)}
 
