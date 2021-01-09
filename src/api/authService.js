@@ -72,3 +72,10 @@ export const loginGoogle = async (googleToken) => {
     return res;
 
   }
+
+  export const  getCurrentUser= () => {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+  export const getUserToken = () => {
+    return localStorage.getItem(ACCESS_TOKEN_NAME);
+  }

@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/Header';
 import Home from './components/Home';
 import Room from './components/Room';
+import Match from './components/Match';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import PrivateRoute from './utils/PrivateRoute';
@@ -37,6 +38,9 @@ function App() {
             </PrivateRoute>
             <PrivateRoute path="/room/:id" >
               <Room setTitle={setTitle} setError={setError}/>
+            </PrivateRoute>
+            <PrivateRoute path="/match/" >
+              <Match />
             </PrivateRoute>
           </Switch>
         </div>
