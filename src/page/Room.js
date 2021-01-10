@@ -16,7 +16,7 @@ import {getUserToken} from '../api/authService';
 function Room(props) {
     const [players, setPlayers] = useState([]);
     const [roomId,setRoomId] =useState();
-    let room_Id = null;
+    let room_Id = props.match.params.id;
 
 
     const setListUser = (() => {
@@ -25,7 +25,7 @@ function Room(props) {
             setPlayers(result.data.players)
             console.log('list player', result.data)
             setRoomId(result.data.room.idRoom);
-            room_Id=result.data.room._id;
+            // room_Id=result.data.room._id;
             console.log('rome _id', room_Id)
 
             props.setTitle(result.data.room.idRoom);
@@ -53,8 +53,8 @@ function Room(props) {
         setListUser();  
         ioClient.on("create_match",async (roomId) =>{
           console.log("creating match");
-          console.log(room_Id);
-         const result = await createMatch(room_Id);
+          console.log(props.match.params.id);
+         const result = await createMatch(props.match.params.id);
          if(!result.error){
           createdMatchSock(result.data._id);
          }
