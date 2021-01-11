@@ -20,10 +20,9 @@ function Room(props) {
 
 
     const setListUser = (() => {
-        getRoomInfo(props.match.params.id).then(result => {
+        getRoomInfo(room_Id).then(result => {
           if (result.status < 400) {
             setPlayers(result.data.players)
-            console.log('list player', result.data)
             setRoomId(result.data.room.idRoom);
             // room_Id=result.data.room._id;
             console.log('rome _id', room_Id)
@@ -53,10 +52,10 @@ function Room(props) {
         setListUser();  
         ioClient.on("create_match",async (roomId) =>{
           console.log("creating match");
-          console.log(props.match.params.id);
-         const result = await createMatch(props.match.params.id);
-         if(!result.error){
-          createdMatchSock(result.data._id);
+         const result = await createMatch(room_Id);
+         console.log(result);
+         if(result._id){
+          createdMatchSock(result._id);
          }
 
 
@@ -87,7 +86,7 @@ function Room(props) {
     ioClient.emit("test_room","something");
   }
   const handlePlay =(() =>{
-    // joinMatch(props.match.params.id);
+    // joinMatch(room_Id);
   })
   // function joinMatch(data){
   //   ioClient.emit("joinmatch",{data});

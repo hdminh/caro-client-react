@@ -28,6 +28,7 @@ function LoginForm(props) {
         (res) => {
           if (res.status === 200) {
             localStorage.setItem("user", JSON.stringify(res.data.datalogin.firstname));
+            localStorage.setItem("id", JSON.stringify(res.data.datalogin.id));
             localStorage.setItem(ACCESS_TOKEN_NAME, res.data.datalogin.token)
             redirectToHome()
           }
@@ -50,6 +51,7 @@ function LoginForm(props) {
           console.log(res)
           if (res.status === 200) {
             localStorage.setItem("user", JSON.stringify(res.data.datalogin.firstname));
+            localStorage.setItem("id", JSON.stringify(res.data.datalogin.id));
             localStorage.setItem(ACCESS_TOKEN_NAME, res.data.datalogin.token)
             redirectToHome()
           }
@@ -69,6 +71,7 @@ function LoginForm(props) {
         login(e.username, e.password).then((response) => {
           console.log(response)
                 if(response.status === 200){
+                    localStorage.setItem("id", JSON.stringify(response.data.datalogin.id));
                     localStorage.setItem(ACCESS_TOKEN_NAME, response.data.datalogin.token);
                     redirectToHome();
                 }

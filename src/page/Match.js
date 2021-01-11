@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 import '../App.css';
 import Board from '../components/Board';
-import { handleClickInMatch } from '../socket/matchSocket';
+import { handleClickInMatch ,endMatchSock} from '../socket/matchSocket';
 import { ioClient } from '../socket/index';
-import { playMatch } from '../api/matchService';
+import { playMatch,surrender } from '../api/matchService';
 import { ContactSupportOutlined } from '@material-ui/icons';
+import {getUserId} from '../api/authService';
+import Button from '@material-ui/core/Button';
 // import  calculateWinner  from '../api/GameService';
 
 
@@ -14,8 +16,11 @@ function Match() {
   const [stepNumber, setStepNumber] = useState(0);
   const [xIsNext, setXIsNext] = useState(true);
   const [canMove, setCanMove] = useState(true);
+  const [status,setStatus]=useState("play");
+  const [timeCount,settimeCount]=useState(60);
   const [oponentMove, setOponentMove] = useState();
   let { id } = useParams();
+
   // const matchId= props.match.params.id;
 
   //   function jumpTo(step) {
@@ -56,17 +61,43 @@ function Match() {
     handleNewMove(JSON.stringify(data.i));
     setCanMove(true);
   })
+  ioClient.off("force_disconnect");
+  ioClient.on("force_disconnect",()=>{
+    endMatchSock();
+  })
 
   const handleClick = async (i) => {
     if (canMove) {
-      console.log("id la"+ id);
+      //call api handle status play
       const result = await playMatch(id,i);
       console.log(result);
+      if(result.winner == "-1"){
+        setStatus("playing");
+      }else if (JSON.stringify(result.winner) == getUserId()){
+      setStatus("you win");
+
+      }else{
+      setStatus("you lose");
+
+      }
+      console.log(result);
+
+
+      //emit to oppenent
       if (!result.error) {
         handleClickInMatch(i);
         handleNewMove(i);
         setCanMove(false);
       }
+    }
+  }
+
+  const handleSurrender=async () =>{
+    const data = await surrender(id);
+    console.log("error surrennder");
+    console.log(data);
+    if(!data._id){
+      endMatchSock();
     }
   }
 
@@ -89,8 +120,6 @@ function Match() {
   //     );
   //   });
 
-
-
   return (
     <div className="game">
       <div className="game-board">
@@ -101,7 +130,31 @@ function Match() {
         {/* winLine={winStruct.line} /> */}
       </div>
       <div className="game-info">
-        {/* <div>{status}</div> */}
+      <Button
+      type="submit"
+      variant="contained"
+      color="primary"
+    onClick={endMatchSock}
+    >
+      End game
+    </Button>
+    <Button
+      type="submit"
+      variant="contained"
+      color="primary"
+    onClick={endMatchSock}
+    >
+      Xin hòa
+    </Button>
+    <Button
+      type="submit"
+      variant="contained"
+      color="primary"
+    onClick={handleSurrender}
+    >
+    Xin hàng
+    </Button>
+        <div>{status}</div>
         {/* <button onClick={() => setIsAscending(!isAscending)}>
           {isAscending ? 'descending' : 'ascending'}
         </button>
