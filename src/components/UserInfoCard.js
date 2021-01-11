@@ -41,14 +41,6 @@ export default function UserCard(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      {/* <CardActions>
-        <Button size="small" 
-        color="primary"
-        onclick={handleButtonReady}
-        >
-          Ready
-        </Button>
-      </CardActions> */}
     </Card>
     }
     </div>

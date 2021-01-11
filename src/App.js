@@ -23,38 +23,29 @@ function App(props) {
   return (
     <Router>
       <div className="App">
-        <Header title={title} auth={auth} setAuth={setAuth} setTitle={setTitle} />
-        <div className="container d-flex align-items-center flex-column">
-          {error && <Alert severity="error">{error}</Alert>}
-          <Switch>
-            <Route path="/login">
-              <LoginForm setAuth={setAuth} setTitle={setTitle} setError={setError} />
-            </Route>
-            <Route path="/register">
-              <RegisterForm setError={setError} />
-            </Route>
-            <PrivateRoute path="/" exact>
-              <Home setError={setError} />
-            </PrivateRoute>
-            <PrivateRoute path="/room/:id" >
-              <Room setTitle={setTitle} setError={setError} />
-            </PrivateRoute>
-            <PrivateRoute path="/match/:id" >
-              <Match setError={setError}  />
-            </PrivateRoute>
-            {/* <PrivateRoute
-              exact
-              path="/match/:id"
-              location={props.location}
-              key={props.location.key}
-              render={({
-                location,
-                match
-              }) => (
-                <Match key={props.location.key} match={match} />
-              )}
-            /> */}
-          </Switch>
+        <div className="container">
+          <Header title={title} auth={auth} setAuth={setAuth} setTitle={setTitle} />
+          <div className="container d-flex align-items-center flex-column">
+            {error && <Alert severity="error">{error}</Alert>}
+            <Switch>
+              <Route path="/login">
+                <LoginForm setAuth={setAuth} setTitle={setTitle} setError={setError} />
+              </Route>
+              <Route path="/register">
+                <RegisterForm setError={setError} />
+              </Route>
+              <PrivateRoute path="/" exact>
+                <Home setError={setError} />
+              </PrivateRoute>
+              <PrivateRoute path="/room/:id" >
+                <Room setTitle={setTitle} setError={setError} />
+              </PrivateRoute>
+              <PrivateRoute path="/match/:id" >
+                <Match setError={setError} />
+              </PrivateRoute>
+          
+            </Switch>
+          </div>
         </div>
       </div>
     </Router>

@@ -60,34 +60,35 @@ export const createMatch = async(id) => {
   }
 
 
-  export const getRoomInfo = async(id) => {
-    const url = API_BASE_URL + "/room/" + id;
-    const res = await axios
-      .get(url, {
-        headers : {
-          'auth-token': localStorage.getItem(ACCESS_TOKEN_NAME),
-          'Content-Type': 'application/json'
-        }
-      });
-    console.log(res)
-    return res;
 
-  }
+  // export const getRoomInfo = async(id) => {
+  //   const url = API_BASE_URL + "/room/" + id;
+  //   const res = await axios
+  //     .get(url, {
+  //       headers : {
+  //         'auth-token': localStorage.getItem(ACCESS_TOKEN_NAME),
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
+  //   console.log(res)
+  //   return res;
 
-  export const leaveRoom = async(id) => {
-    const data = {
-      id: id
-    }
-    const res = await axios
-      .post(API_BASE_URL + "/room/leaveRoom",
-        data, {
-        headers : {
+  // }
+
+  // export const leaveRoom = async(id) => {
+  //   const data = {
+  //     id: id
+  //   }
+  //   const res = await axios
+  //     .post(API_BASE_URL + "/room/leaveRoom",
+  //       data, {
+  //       headers : {
       
-          'Content-Type': 'application/json'
-        }
-      });
-    return res;
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
+  //   return res;
 
-  }
+  // }
 
 
