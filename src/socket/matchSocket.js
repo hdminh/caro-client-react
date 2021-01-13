@@ -1,8 +1,8 @@
 import { ioClient } from './index';
 
 //data is userid
-export const joinMatchSock = (roomId) => {
-    ioClient.emit("join_match", roomId);
+export const joinMatchSock = (roomId,userName) => {
+    ioClient.emit("join_match", {roomId,userName});
 }
 
 
@@ -11,8 +11,9 @@ export const handleClickInMatch = (i) => {
     ioClient.emit("play", { i });
 }
 
-export const createdMatchSock = (matchId) => {
-    ioClient.emit("match_created", matchId);
+export const createdMatchSock = (roomId,matchId) => {
+    console.log(roomId+matchId +"ne");
+    ioClient.emit("match_created", {roomId,matchId});
 } 
 export const endMatchSock =() => {
     ioClient.emit("force_disconnect");

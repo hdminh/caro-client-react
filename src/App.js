@@ -55,7 +55,7 @@ function App(props) {
                 <Room setTitle={setTitle} setError={setError} />
               </PrivateRoute>
               <PrivateRoute path="/match/:id" >
-                <Match setError={setError} />
+                <Match setError={setError} title={title} />
               </PrivateRoute>
               <PrivateRoute path="/user" >
                 <User setError={setError} />

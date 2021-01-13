@@ -11,19 +11,20 @@ import Board from '../components/Board';
 import { handleClickInMatch, endMatchSock } from '../socket/matchSocket';
 import { ioClient } from '../socket/index';
 import { playMatch, surrender } from '../api/matchService';
-import { ContactSupportOutlined } from '@material-ui/icons';
-import { getUserId } from '../api/authService';
+import { ContactSupportOutlined, PinDropSharp } from '@material-ui/icons';
+import { getCurrentUser, getUserId } from '../api/authService';
 import Button from '@material-ui/core/Button';
 import { Chat } from '../components';
 // import  calculateWinner  from '../api/GameService';
 
 
-function Match() {
+function Match(props) {
   const [history, setHistory] = useState([{ squares: Array(400).fill(null) }]);
   const [stepNumber, setStepNumber] = useState(0);
   const [xIsNext, setXIsNext] = useState(true);
   const [canMove, setCanMove] = useState(true);
   const [status, setStatus] = useState("play");
+  const [infor,setInfor]=useState({});
   const [timeCount, settimeCount] = useState(60);
   const [oponentMove, setOponentMove] = useState();
   let { id } = useParams();
@@ -67,16 +68,35 @@ function Match() {
   }
 
 
-  ioClient.off("opponent_move");
-  ioClient.on("opponent_move", (data) => {
-    handleNewMove(JSON.stringify(data.i));
-    setCanMove(true);
-  })
+  // ioClient.off("opponent_move");
+  // ioClient.on("opponent_move", (data) => {
+  //   handleNewMove(JSON.stringify(data.i));
+  //   setCanMove(true);
+  // })
 
   ioClient.off("force_disconnect");
   ioClient.on("force_disconnect", () => {
     endMatchSock();
   })
+  ioClient.off("opponent_move");
+  ioClient.on("opponent_move", (data) => {
+    handleNewMove(JSON.stringify(data.i));
+    setCanMove(true);
+  },[])
+
+  ioClient.on("time_out", (data) => {
+    console.log(data);
+    console.log(JSON.stringify(data));
+    if(data==1){
+      setStatus("Bạn đa thắng vì đối thủ đã hết thời gian đánh");
+    }else{
+      setStatus("Bạn đa thua vì đã hết thời gian đánh");
+
+    }
+  });
+
+
+
 
   const handleClick = async (i) => {
     if (canMove) {
@@ -106,6 +126,12 @@ function Match() {
 
   //move
   const current = history[history.length - 1];
+  useEffect(() => {
+  console.log(localStorage.getItem("player"));
+  setInfor(localStorage.getItem("player"));
+  },[]);
+
+
   //   console.log(current);
   //   const squares = current.squares.slice();
   //   const moves = history.map((step, move) => {
@@ -162,7 +188,16 @@ function Match() {
             Xin hàng
     </Button>
     <br/>
-    <Chat name={getUserId()} room={"123"}/>
+    <div> 
+      {infor==null ?(<p>loading...</p>) : (
+        <p>Người chơi 1 : {infor['player1'] } Người chơi 2 : {infor.player2 } </p>
+      )}
+      
+
+</div>   
+    <div>{status}</div>
+    <br/>
+    <Chat name={getCurrentUser()} room={JSON.stringify(props.title)}/>
         </Grid>
       </Grid>
 
