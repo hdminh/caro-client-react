@@ -19,17 +19,14 @@ export const Chat = (props) => {
   const [users, setUsers] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const ENDPOINT = 'https://react-chat-page.herokuapp.com/';
 
 
   useEffect(() => {
     const { name, room } = props;
     console.log(name+room);
 
-    // socket = io(ENDPOINT);
-
     setRoom(room);
-    setName(name)
+    setName(name);
 
     ioClient.emit('join', { name, room }, (error) => {
       if(error) {
