@@ -38,6 +38,7 @@ function App(props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+
   return (
     <Router>
       <div className="App">
@@ -80,7 +81,7 @@ function App(props) {
                 <User setError={setError} setLoading={setLoading}/>
               </PrivateRoute>
               <PrivateRoute path="/history">
-                <History setError={setError} setLoading={setLoading} />
+                <History setError={setError} setLoading={setLoading}/>
               </PrivateRoute>
               <Route path="" component={NotFound} />
             </Switch>
