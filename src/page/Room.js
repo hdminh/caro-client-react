@@ -103,19 +103,18 @@ function Room(props) {
 
   return (
     <div className="App">
-      { roomId !== null && 
+      { roomId && 
       <Button
       type="submit"
       variant="contained"
       color="primary"
-    onClick={handleReady}
+      onClick={handleReady}
     >
       Ready
     </Button>}
-         
-          
-      {players !== null && players.map((player) => <UserInfoCard key={player._id} user={player} />)}
-
+    <div>
+      {players && players.map((player) => <UserInfoCard key={player._id} user={player} />)}
+    </div>
     </div>
   );
 }

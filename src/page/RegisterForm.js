@@ -17,7 +17,6 @@ function RegisterForm(props) {
 
     const {register, handleSubmit} = useForm();
 
-
     const handleSubmitCheck = (e) => {
         checkRegister(e.username, e.password, e.confirmpassword).then(res => {
           if(res.status === 200){

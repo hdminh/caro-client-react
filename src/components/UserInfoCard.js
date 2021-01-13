@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     maxWidth: 345,
   },
   media: {
-    height: 140,
+    height: 345,
   },
 });
 
@@ -25,19 +25,25 @@ export default function UserCard(props) {
 
     return (
       <div>
-      {props.user !== null && <Card className={classes.root}>
+      {props.user && <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
           image={props.user.avatar}
-          title={props.user.name}
+          title={props.user.firstname}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {props.user.name}
+          {props.user.firstname} {props.user.lastname} 
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">aaaa
-            {/* {new Date(user.registerDate).toLocaleDateString} */}
+          <Typography variant="body2" color="textSecondary" component="p">
+           Thắng: {props.user.win}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            Cup: {props.user.cup}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+           Số trận đã chơi: {props.user.totalmatch}
           </Typography>
         </CardContent>
       </CardActionArea>

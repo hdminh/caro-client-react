@@ -1,0 +1,69 @@
+import React, { useEffect, useState } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { withRouter } from "react-router-dom";
+import UserInfoForm from "../components/UserInfoForm";
+import { getUserInfo } from "../api/userService";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+function UserInfo(props) {
+  useEffect(() => {
+    getInfo();
+  });
+
+  const [data, setData] = useState(null);
+
+  const getInfo = () => {
+    getUserInfo()
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+      })
+      .catch((error) => {
+        props.setError(error);
+      });
+  };
+
+  // const redirect = () => {
+  //   props.setError(null)
+  //   props.history.push('/login');
+  // }
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: '#444'
+    },
+    form: {
+      width: "100%", // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
+  const classes = useStyles();
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <AccountCircleIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          UserInfo
+        </Typography>
+        {data && <UserInfoForm data={data} />}
+      </div>
+    </Container>
+  );
+}
+
+export default withRouter(UserInfo);

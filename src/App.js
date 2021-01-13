@@ -8,6 +8,7 @@ import LoginForm from './page/LoginForm';
 import RegisterForm from './page/RegisterForm';
 import PrivateRoute from './utils/PrivateRoute';
 import Alert from '@material-ui/lab/Alert';
+import User from './page/User';
 
 import {
   BrowserRouter as Router,
@@ -42,6 +43,9 @@ function App(props) {
               </PrivateRoute>
               <PrivateRoute path="/match/:id" >
                 <Match setError={setError} />
+              </PrivateRoute>
+              <PrivateRoute path="/user" >
+                <User setError={setError} />
               </PrivateRoute>
           
             </Switch>
