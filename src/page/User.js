@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { withRouter } from "react-router-dom";
@@ -16,12 +15,15 @@ function UserInfo(props) {
   const [data, setData] = useState(null);
 
   const getInfo = () => {
+    props.setLoading(true)
     getUserInfo()
       .then((res) => {
+          props.setLoading(false)
         console.log(res.data);
         setData(res.data);
       })
       .catch((error) => {
+        props.setLoading(false)
         props.setError(error);
       });
   };

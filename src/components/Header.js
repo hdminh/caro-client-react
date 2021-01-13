@@ -119,13 +119,17 @@ function Header(props) {
       setOpen(true);
     };
 
-    const handleClickUser = (() => {
-      props.history.push('/user')
-    })
+
 
     const handleClickMatch = (() => {
       props.history.push('/')
     })
+    const handleClickUser = (() => {
+      props.history.push('/user')
+    })
+    const handleClickHistory = () => {
+      props.history.push('/history')
+    }
 
     const handleLogout = () => {
         localStorage.removeItem(ACCESS_TOKEN_NAME)
@@ -189,8 +193,8 @@ function Header(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                 <MenuItem onClick={handleProfile}>Tài khoản</MenuItem>
+                <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
               </Menu>
         </Toolbar>
       </AppBar>
@@ -217,6 +221,10 @@ function Header(props) {
             <ListItem button key={'match'}>
               <ListItemIcon><MailIcon /> </ListItemIcon>
               <ListItemText primary={'Match'} onClick={handleClickMatch}/>
+            </ListItem>
+            <ListItem button key={'history'}>
+              <ListItemIcon><MailIcon /> </ListItemIcon>
+              <ListItemText primary={'History'} onClick={handleClickHistory}/>
             </ListItem>
         </List>
         <Divider />
