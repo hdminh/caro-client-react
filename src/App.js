@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Header from './components/Header';
+import { makeStyles } from '@material-ui/core/styles';
 import Home from './page/Home';
 import Room from './page/Room';
 import Match from './page/Match';
@@ -16,7 +17,19 @@ import {
   Route
 } from "react-router-dom";
 
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  }
+}))
+
 function App(props) {
+  const classes = useStyles();
   const [title, setTitle] = useState("Caro");
   const [auth, setAuth] = useState(true);
   const [error, setError] = useState(null);

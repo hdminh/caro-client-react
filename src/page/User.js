@@ -7,11 +7,11 @@ import Container from "@material-ui/core/Container";
 import { withRouter } from "react-router-dom";
 import UserInfoForm from "../components/UserInfoForm";
 import { getUserInfo } from "../api/userService";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 function UserInfo(props) {
   useEffect(() => {
     getInfo();
-  });
+  }, []);
 
   const [data, setData] = useState(null);
 
@@ -38,8 +38,9 @@ function UserInfo(props) {
       alignItems: "center",
     },
     avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: '#444'
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+      backgroundColor: "#444",
     },
     form: {
       width: "100%", // Fix IE 11 issue.
@@ -53,15 +54,15 @@ function UserInfo(props) {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <AccountCircleIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          UserInfo
-        </Typography>
-        {data && <UserInfoForm data={data} />}
-      </div>
+      {data && (
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar} src={data.avatar}>
+            <AccountCircleIcon />
+          </Avatar>
+
+          <UserInfoForm data={data} />
+        </div>
+      )}
     </Container>
   );
 }

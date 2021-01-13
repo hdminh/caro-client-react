@@ -146,7 +146,7 @@ export default function UserInfoForm(props) {
         color="primary"
         className={classes.submit}
       >
-        Sign Up
+        Submit
       </Button>
     </form>
   );
