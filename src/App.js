@@ -15,6 +15,9 @@ import User from "./page/User";
 import MatchHistory from "./page/MatchHistory";
 import NotFound from "./page/NotFound";
 import Backdrop from "@material-ui/core/Backdrop";
+import ResetPassword from "./page/ResetPassword";
+import ConformVerify from "./page/ConformVerify";
+import ConformVeryfyMail from "./page/ConformVerifyMail";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -66,6 +69,18 @@ function App(props) {
                   setLoading={setLoading}
                 />
               </Route>
+              <Route path="/resetpassword">
+                <ResetPassword/>
+              </Route>
+
+              <Route path="/user/forgetpassword">
+                <ConformVerify/>
+              </Route>
+              
+              <Route path="/user/emailverify/verify">
+                <ConformVeryfyMail/>
+              </Route>
+
               <Route path="/register">
                 <RegisterForm setError={setError} setLoading={setLoading} />
               </Route>
@@ -86,7 +101,7 @@ function App(props) {
                   setLoading={setLoading}
                 />
               </PrivateRoute>
-              <PrivateRoute path="/user">
+              <PrivateRoute exact path="/user">
                 <User setError={setError} setLoading={setLoading} />
               </PrivateRoute>
               <PrivateRoute path="/ranking">

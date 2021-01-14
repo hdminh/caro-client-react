@@ -38,6 +38,7 @@ function Match(props) {
   //   setXIsNext((step % 2) === 0);
   // }
 
+
   const handleNewMove = (i) => {
     const clickhistory = history.slice(0, stepNumber + 1);
     const current = clickhistory[clickhistory.length - 1];
@@ -66,6 +67,7 @@ function Match(props) {
       setStatus("you lose");
     }
   };
+  // const handleEndMatch = (message)
 
   ioClient.off("force_disconnect");
   ioClient.on("force_disconnect", () => {

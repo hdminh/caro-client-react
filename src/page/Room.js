@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import { ACCESS_TOKEN_NAME } from '../constants/apiContants';
-import { getRoomInfo } from '../api/roomService';
+import { getRoomInfo ,leaveRoom} from '../api/roomService';
 import UserInfoCard from '../components/UserInfoCard';
 import { joinMatchSock, createdMatchSock } from '../socket/matchSocket';
 import { createMatch } from '../api/matchService';
@@ -58,7 +58,8 @@ function Room(props) {
     ioClient.on("new_room_player", (data) => {
       setListUser();
       console.log(data);
-      // setPlayers([]);
+
+
     });
   }, []);
   function redirectToLogin() {
@@ -76,6 +77,12 @@ function Room(props) {
     console.log(enemyId);
     inviteRoomSock(roomId,enemyId,getCurrentUser())
   }
+
+  const handleOutRoom=()=>{
+    leaveRoom(room_Id);
+    props.history.push("/");
+    
+  }
   
 
   return (
@@ -85,6 +92,14 @@ function Room(props) {
       PHÒNG ĐẤU {roomId}
        </Typography>
        <br/>
+       <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              onClick={handleOutRoom}
+            >
+              Exit
+    </Button>
        {roomId !== null &&
             <Button
               type="submit"
@@ -94,13 +109,15 @@ function Room(props) {
             >
               Ready
     </Button>}
+
+
       <Grid container spacing={2}>
         <Grid item xs={6}>
 
     {players !== null && players.map((player) => <UserInfoCard key={player._id} user={player}></UserInfoCard>)}
         </Grid>
         <Grid item xs={6}>
-          <UserOnline handleInvite={handleInvite}/>
+          <UserOnline Invite={true} handleInvite={handleInvite}/>
         </Grid>
        
 
