@@ -22,11 +22,9 @@ export default function InputPasswordDialog(props) {
   const handleRedirect = () => {
     if (props.type === "new") {
       setLink("/room/" + props.id);
-    } else {
-      setLink("/");
+      setRedirect(true);
     }
     props.setOpen(false);
-    setRedirect(true);
   };
 
   const handlePassword = () => {
