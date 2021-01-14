@@ -45,7 +45,6 @@ export default function UserTable(props) {
             <StyledTableCell>Total Match</StyledTableCell>
             <StyledTableCell>Cup</StyledTableCell>
             <StyledTableCell>Win</StyledTableCell>
-            <StyledTableCell align="right">Status</StyledTableCell>
           </TableRow>
         </TableHead>
 
@@ -60,24 +59,6 @@ export default function UserTable(props) {
                 <StyledTableCell>{row.totalmatch}</StyledTableCell>
                 <StyledTableCell>{row.cup}</StyledTableCell>
                 <StyledTableCell>{row.win}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {row.status ? (
-                    <InputLabel
-                      id="outlined-error"
-                      label="Error"
-                      children={"Activated"}
-                      variant="outlined"
-                    />
-                  ) : (
-                    <InputLabel
-                      error
-                      id="outlined-error"
-                      label="Error"
-                      children={"Blocked"}
-                      variant="outlined"
-                    />
-                  )}
-                </StyledTableCell>
               </StyledTableRow>
             ))}
         </TableBody>
