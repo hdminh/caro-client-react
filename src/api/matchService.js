@@ -41,11 +41,13 @@ export const createMatch = async(id) => {
       });
   }
 
-  export const chatMatch = async (matchId, {user,message}) => {
+  export const chatMatch = async (matchId, {name,message}) => {
+    console.log("user"+name);
     const data = {
       id: matchId,
-      message:{user:user,text:message}
+      message:{user:name,text:message}
     }
+    console.log(data);
     return await axios
       .post(API_BASE_URL + "/match/chat",
       data, {

@@ -16,6 +16,7 @@ import { getCurrentUser, getUserId } from '../api/authService';
 import Button from '@material-ui/core/Button';
 import { Chat } from '../components';
 import Dialog from '../components/Dialog';
+import Countdown from "react-countdown";
 // import  calculateWinner  from '../api/GameService';
 
 
@@ -101,12 +102,10 @@ function Match(props) {
   })
 
   const handleAgreeDraw=async () =>{
-    console.log("vo dc agree draw");
     setOpenDialog(false);
     const result = await DrawMatch(id);
     if(result._id){
       setStatus("Draw");
-
     endMatchSock();
     }
   }
@@ -155,22 +154,6 @@ function Match(props) {
   },[]);
 
 
-  //   console.log(current);
-  //   const squares = current.squares.slice();
-  //   const moves = history.map((step, move) => {
-  //     const latestMoveSquare = step.latestMoveSquare;
-  //     const col = 1 + latestMoveSquare % 20;
-  //     const row = 1 + Math.floor(latestMoveSquare / 20);
-  //     const desc = move ?
-  //       `Go to move #${move} (${col}, ${row})` :
-  //       'Go to game start';
-  //     return (
-  //       <li key={move}>
-  //         <button className={move === stepNumber ? 'bold-selected-item' : ''}
-  //           onClick={() => jumpTo(move)}>{desc}</button>
-  //       </li>
-  //     );
-  //   });
 
   return (
     <Container component="main">
@@ -191,14 +174,6 @@ function Match(props) {
             type="submit"
             variant="contained"
             color="primary"
-            onClick={endMatchSock}
-          >
-            End game
-    </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
             onClick={handleDraw}
           >
             Xin hòa
@@ -212,6 +187,14 @@ function Match(props) {
             Xin hàng
     </Button>
     <br/>
+    <Countdown
+        date={Date.now()+60000}
+        intervalDelay={1000}
+        precision={1000}
+        renderer={(props) => <div>{parseInt(props.total/1000)}</div>}
+        onComplete={()=>{console.log("time outq ")}}>
+          Thời gian: 
+      </Countdown>
     <div> 
       {infor==null ?(<p>loading...</p>) : (
         <p>Người chơi 1 : {infor['player1'] } Người chơi 2 : {infor.player2 } </p>
@@ -226,52 +209,6 @@ function Match(props) {
       </Grid>
 
     </Container>
-
-
-    // <div className="game">
-    //   <div className="game-board">
-    //   <Typography component="h1" variant="h5">
-    //             TRAN DAU 
-    //     </Typography>
-    //     <Board
-    //       squares={current.squares}
-    //       onClick={(i) => handleClick(i)}
-    //     />
-    //     {/* winLine={winStruct.line} /> */}
-    //   </div>
-    //   <div className="game-info">
-    //   <Button
-    //   type="submit"
-    //   variant="contained"
-    //   color="primary"
-    // onClick={endMatchSock}
-    // >
-    //   End game
-    // </Button>
-    // <Button
-    //   type="submit"
-    //   variant="contained"
-    //   color="primary"
-    // onClick={endMatchSock}
-    // >
-    //   Xin hòa
-    // </Button>
-    // <Button
-    //   type="submit"
-    //   variant="contained"
-    //   color="primary"
-    // onClick={handleSurrender}
-    // >
-    // Xin hàng
-    // </Button>
-    //     <div>{status}</div>
-    //     <Chat/>
-    //     {/* <button onClick={() => setIsAscending(!isAscending)}>
-    //       {isAscending ? 'descending' : 'ascending'}
-    //     </button>
-    //     <ol>{moves}</ol> */}
-    //   </div>
-    // </div>
   );
 }
 

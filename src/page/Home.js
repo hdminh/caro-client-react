@@ -59,7 +59,7 @@ function Home(props) {
     const acceptInvite=() =>{
       console.log("accept invite");
       setOpenDialog(false);
-      handleJoin()
+      handleJoin({id:inviteRoomId});
 
     }
 

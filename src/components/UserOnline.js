@@ -87,7 +87,7 @@ export default function UserList(props) {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Typography component="h1" variant="h5"> DANH SÁCH MỜI ĐANG ONLINE </Typography>
+                <Typography component="h1" variant="h5"> DANH SÁCH NGƯỜI CHƠI ĐANG ONLINE </Typography>
                 <div>
                     {isBusy ? (<p>loading...</p>) : (
                         data.map((item, index) => <li key={item.name}>
