@@ -1,24 +1,32 @@
-import React,{ useEffect } from 'react';
+import React,{ useEffect,useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { withRouter } from 'react-router-dom';
 import {useForm } from 'react-hook-form';
 import { ACCESS_TOKEN_NAME } from '../constants/apiContants';
+import {getUserToken,getCurrentUser} from '../api/authService';
 import { joinRoom, addRoom } from '../api/roomService';
 import {joinRoomSock,addRoomScok} from '../socket/roomSocket';
+import {ioClient} from '../socket/index';
+import UserOnline from '../components/UserOnline';
+import Dialog from '../components/Dialog';
 // import io from 'socket.io-client'
 
 //const ioClient = io.connect("https://caro-game-api.herokuapp.com/");
 
 function Home(props) {
-      // const token = localStorage.getItem(ACCESS_TOKEN_NAME)
-      // if(token){
-      //   ioClient.emit("online",{ token: token })
-      // }
+    const [openDialog,setOpenDialog]=useState(false);
+    const [contentDialog,setContentDialog]= useState("accept");
+    const [inviteRoomId,setInviteRoomId]=useState();
     const {register, handleSubmit} = useForm();
+    const token = getUserToken();
+    const name = getCurrentUser();
 
+    
     const handleJoin = ((data) => {
+      console.log("data in handle join");
+      console.log(data);
       joinRoom(data.id).then(result => {
         if (result.status < 400) {
           props.setError(null)
@@ -48,6 +56,12 @@ function Home(props) {
         props.setError(error.message)
       })
     })
+    const acceptInvite=() =>{
+      console.log("accept invite");
+      setOpenDialog(false);
+      handleJoin()
+
+    }
 
     // const  joinRoomSock=((data) =>{
     //   ioClient.emit("join_room",{data});
@@ -55,7 +69,18 @@ function Home(props) {
 
     useEffect(() => {
         if (!localStorage.getItem(ACCESS_TOKEN_NAME)) redirectToLogin();  
-    })
+        if(token){
+          ioClient.off("online");
+          ioClient.emit("online", getCurrentUser());
+        }
+
+        ioClient.on("join_room_from_invite",({roomId,name})=>{
+            setContentDialog(name +" muốn mời bạn chơi cùng phòng " +roomId);
+            setInviteRoomId(roomId);
+            setOpenDialog(true);
+          console.log(roomId+name);
+        })
+    },[])
   function redirectToLogin() {
     props.history.push('/login');
   }
@@ -111,6 +136,8 @@ function Home(props) {
           >
             Add new room
           </Button>
+          <UserOnline />
+          <Dialog setOpenDialog={setOpenDialog} openDialog={openDialog} content={contentDialog} setResult={acceptInvite}/>
     </div>
   );
 }

@@ -31,7 +31,8 @@ function RegisterForm(props) {
               props.setError(error)
             });
         }
-      }).catch(function (error) {
+      }).catch((error) => {
+        console.log(error);
         props.setError(error.message)
       });
     }

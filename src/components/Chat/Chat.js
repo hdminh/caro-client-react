@@ -7,7 +7,8 @@ import {ioClient} from "../../socket/index";
 import {InfoBar} from '../InfoBar/InfoBar';
 import {Input} from '../Input/Input';
 import {Messages} from '../Messages/Messages';
-import {TextContainer} from '../TextContainer/TextContainer'
+import {TextContainer} from '../TextContainer/TextContainer';
+import {chatMatch} from '../../api/matchService';
 
 import './Chat.css';
 
@@ -18,7 +19,7 @@ export const Chat = (props) => {
   const [room, setRoom] = useState('');
   const [users, setUsers] = useState('');
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([{user:"xxx",text:"test"}]);
 
 
   useEffect(() => {
@@ -37,7 +38,9 @@ export const Chat = (props) => {
   
   useEffect(() => {
     ioClient.on('message', message => {
+
       setMessages(msgs => [ ...msgs, message ]);
+      console.log(messages);
     });
     
     ioClient.on("roomData", ({ users }) => {
@@ -45,11 +48,18 @@ export const Chat = (props) => {
     });
 }, []);
 
-  const sendMessage = (event) => {
+  const sendMessage = async (event) => {
     event.preventDefault();
 
     if(message) {
+      console.log("message is");
+        console.log(message);
+        console.log(name);
+        const result =await chatMatch(props.id,{name,message});
+
+      if(result._id){
       ioClient.emit('sendMessage', message, () => setMessage(''));
+      }
     }
   }
 

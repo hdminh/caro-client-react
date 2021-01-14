@@ -11,10 +11,11 @@ import { getRoomInfo } from '../api/roomService';
 import UserInfoCard from '../components/UserInfoCard';
 import { joinMatchSock, createdMatchSock } from '../socket/matchSocket';
 import { createMatch } from '../api/matchService';
-import { newRoomPlayerSock } from '../socket/roomSocket';
+import { newRoomPlayerSock, inviteRoomSock} from '../socket/roomSocket';
 import { ioClient } from '../socket/index';
 import Button from '@material-ui/core/Button';
 import { getCurrentUser, getUserToken } from '../api/authService';
+import UserOnline from '../components/UserOnline';
 
 // import io from 'socket.io-client';
 // // const ioClient = io.connect("http://127.0.0.1:8088");
@@ -80,12 +81,16 @@ function Room(props) {
     // const userToken=getUserToken();
     joinMatchSock(roomId, getCurrentUser());
   }
+  const handleInvite=(enemyId)=>{
+    console.log(enemyId);
+    inviteRoomSock(roomId,enemyId,getCurrentUser())
+  }
 
   return (
     <Container component="main">
       <CssBaseline />
       <Typography component="h1" variant="h5">
-       PHONG DAU
+      PHÒNG ĐẤU
        </Typography>
        <br/>
        {roomId !== null &&
@@ -98,11 +103,13 @@ function Room(props) {
               Ready
     </Button>}
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
 
     {players !== null && players.map((player) => <UserInfoCard key={player._id} user={player}></UserInfoCard>)}
         </Grid>
-        <Grid item xs={6}></Grid>
+        <Grid item xs={4}>
+          <UserOnline handleInvite={handleInvite}/>
+        </Grid>
        
 
       </Grid>

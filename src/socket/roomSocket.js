@@ -17,3 +17,8 @@ export const newRoomPlayerSock = () =>{
         // setOponentMove(JSON.stringify(data.i));
       })
 }
+
+export const inviteRoomSock=(roomId,socketId,name) =>{
+    console.log(roomId+socketId+name);
+    ioClient.emit("invite_room",{roomId,socketId,name});
+}

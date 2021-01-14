@@ -41,12 +41,49 @@ export const createMatch = async(id) => {
       });
   }
 
+  export const chatMatch = async (matchId, {user,message}) => {
+    const data = {
+      id: matchId,
+      message:{user:user,text:message}
+    }
+    return await axios
+      .post(API_BASE_URL + "/match/chat",
+      data, {
+        headers : {
+          'auth-token': localStorage.getItem(ACCESS_TOKEN_NAME),
+          'Content-Type': 'application/json'
+        }
+      }).then((response) =>{
+        return response.data;
+      }).catch((err) => {
+        return err;
+      });
+  }
+
   export const surrender = async (matchId) => {
     const data = {
       id: matchId
     }
     return await axios
       .put(API_BASE_URL + "/match/surrender",
+      data, {
+        headers : {
+          'auth-token': localStorage.getItem(ACCESS_TOKEN_NAME),
+          'Content-Type': 'application/json'
+        }
+      }).then((response) =>{
+        return response.data;
+      }).catch((err) => {
+        return err;
+      });
+  }
+
+  export const DrawMatch =async (matchId) =>{
+    const data = {
+      id: matchId
+    }
+    return await axios
+      .put(API_BASE_URL + "/match/draw",
       data, {
         headers : {
           'auth-token': localStorage.getItem(ACCESS_TOKEN_NAME),

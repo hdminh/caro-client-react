@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL, ACCESS_TOKEN_NAME } from '../constants/apiContants';
+import { endMatchSock} from '../socket/matchSocket';
 
 export const login = async (username, password) => {
     const url = API_BASE_URL + '/auth/login';
@@ -43,6 +44,9 @@ export const signup = async (data) => {
 
 export const logout = () => {
     localStorage.removeItem(ACCESS_TOKEN_NAME);
+    localStorage.removeItem("user");
+    localStorage.removeItem("id");
+    endMatchSock();
 }
 
 export const loginGoogle = async (googleToken) => {

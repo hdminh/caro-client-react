@@ -8,13 +8,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import Board from '../components/Board';
-import { handleClickInMatch, endMatchSock } from '../socket/matchSocket';
+import { handleClickInMatch, endMatchSock,drawMatchSock } from '../socket/matchSocket';
 import { ioClient } from '../socket/index';
-import { playMatch, surrender } from '../api/matchService';
+import { playMatch, surrender,DrawMatch } from '../api/matchService';
 import { ContactSupportOutlined, PinDropSharp } from '@material-ui/icons';
 import { getCurrentUser, getUserId } from '../api/authService';
 import Button from '@material-ui/core/Button';
 import { Chat } from '../components';
+import Dialog from '../components/Dialog';
 // import  calculateWinner  from '../api/GameService';
 
 
@@ -25,6 +26,7 @@ function Match(props) {
   const [canMove, setCanMove] = useState(true);
   const [status, setStatus] = useState("play");
   const [infor,setInfor]=useState({});
+  const [openDialog,setOpenDialog]=useState(false);
   const [timeCount, settimeCount] = useState(60);
   const [oponentMove, setOponentMove] = useState();
   let { id } = useParams();
@@ -68,12 +70,6 @@ function Match(props) {
   }
 
 
-  // ioClient.off("opponent_move");
-  // ioClient.on("opponent_move", (data) => {
-  //   handleNewMove(JSON.stringify(data.i));
-  //   setCanMove(true);
-  // })
-
   ioClient.off("force_disconnect");
   ioClient.on("force_disconnect", () => {
     endMatchSock();
@@ -83,7 +79,7 @@ function Match(props) {
     handleNewMove(JSON.stringify(data.i));
     setCanMove(true);
   },[])
-
+  ioClient.off("time_out");
   ioClient.on("time_out", (data) => {
     console.log(data);
     console.log(JSON.stringify(data));
@@ -94,6 +90,31 @@ function Match(props) {
 
     }
   });
+
+  // ioClient.off("draw_match");
+  ioClient.off("draw_match_send");
+  ioClient.on("draw_match_send",async()=>{
+    console.log("on draw request");
+    setOpenDialog(true);
+   
+
+  })
+
+  const handleAgreeDraw=async () =>{
+    console.log("vo dc agree draw");
+    setOpenDialog(false);
+    const result = await DrawMatch(id);
+    if(result._id){
+      setStatus("Draw");
+
+    endMatchSock();
+    }
+  }
+
+  const handleDraw = async() =>{
+    drawMatchSock();
+  }
+
 
 
 
@@ -124,6 +145,8 @@ function Match(props) {
     }
   }
 
+
+ 
   //move
   const current = history[history.length - 1];
   useEffect(() => {
@@ -151,6 +174,7 @@ function Match(props) {
 
   return (
     <Container component="main">
+      <Dialog openDialog={openDialog} setOpenDialog={setOpenDialog} setResult={handleAgreeDraw} content={"Đối thủ xin cầu hòa"}/>
       <CssBaseline />
       <Typography component="h1" variant="h5">
           TRAN DAU
@@ -175,7 +199,7 @@ function Match(props) {
             type="submit"
             variant="contained"
             color="primary"
-            onClick={endMatchSock}
+            onClick={handleDraw}
           >
             Xin hòa
     </Button>
@@ -197,7 +221,7 @@ function Match(props) {
 </div>   
     <div>{status}</div>
     <br/>
-    <Chat name={getCurrentUser()} room={JSON.stringify(props.title)}/>
+    <Chat name={getCurrentUser()} room={JSON.stringify(props.title)} id={id}/>
         </Grid>
       </Grid>
 
