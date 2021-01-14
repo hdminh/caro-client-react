@@ -40,18 +40,11 @@ function Room(props) {
       });
   };
   useEffect(() => {
-    // if (!localStorage.getItem(ACCESS_TOKEN_NAME)) redirectToLogin();
-    //  newRoomPlayerSock();
-    // setListUser();
     setListUser();
     ioClient.on("create_match", async ({ roomId, player1, player2 }) => {
       const result = await createMatch(room_Id);
       console.log(result);
       if (result._id) {
-        // console.log(roomId);
-        // console.log(JSON.stringify(roomId));
-
-        // console.log(roomInfor.roomId);
         createdMatchSock(roomId, result._id);
         localStorage.setItem("player", JSON.stringify({ player1, player2 }));
       }

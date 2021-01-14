@@ -7,15 +7,15 @@ import Room from "./page/Room";
 import Match from "./page/Match";
 import History from "./page/History";
 import LoginForm from "./page/LoginForm";
-import Ranking from './page/Ranking';
+import Ranking from "./page/Ranking";
 import RegisterForm from "./page/RegisterForm";
 import PrivateRoute from "./utils/PrivateRoute";
 import Alert from "@material-ui/lab/Alert";
 import User from "./page/User";
-import MatchHistory from './page/MatchHistory';
+import MatchHistory from "./page/MatchHistory";
 import NotFound from "./page/NotFound";
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  }  
+    color: "#fff",
+  },
 }));
 
 function App(props) {
@@ -39,7 +39,7 @@ function App(props) {
   const [auth, setAuth] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   return (
     <Router>
       <div className="App">
@@ -70,19 +70,27 @@ function App(props) {
                 <RegisterForm setError={setError} setLoading={setLoading} />
               </Route>
               <PrivateRoute path="/" exact>
-                <Home setError={setError} setLoading={setLoading}/>
+                <Home setError={setError} setLoading={setLoading} />
               </PrivateRoute>
               <PrivateRoute path="/room/:id">
-                <Room setTitle={setTitle} setError={setError} setLoading={setLoading}/>
+                <Room
+                  setTitle={setTitle}
+                  setError={setError}
+                  setLoading={setLoading}
+                />
               </PrivateRoute>
               <PrivateRoute path="/match/:id">
-                <Match setError={setError} title={title} setLoading={setLoading}/>
+                <Match
+                  setError={setError}
+                  title={title}
+                  setLoading={setLoading}
+                />
               </PrivateRoute>
               <PrivateRoute path="/user">
-                <User setError={setError} setLoading={setLoading}/>
+                <User setError={setError} setLoading={setLoading} />
               </PrivateRoute>
-              <PrivateRoute path="/rank">
-                <Ranking setError={setError} setLoading={setLoading}/>
+              <PrivateRoute path="/ranking">
+                <Ranking setError={setError} setLoading={setLoading} />
               </PrivateRoute>
               <PrivateRoute path="/history">
                 <History setError={setError} setLoading={setLoading} />

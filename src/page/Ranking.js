@@ -23,6 +23,8 @@ export default function User(props) {
         }
       })
       .catch((error) => {
+        props.setLoading(false);
+
         console.log("error", error);
         props.setError(error.message);
       });

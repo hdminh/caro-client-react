@@ -125,7 +125,7 @@ function Header(props) {
       props.history.push('/')
     })
     const handleClickUser = (() => {
-      props.history.push('/user')
+      props.history.push('/ranking')
     })
     const handleClickHistory = () => {
       props.history.push('/history')
@@ -214,9 +214,9 @@ function Header(props) {
         </div>
         <Divider />
         <List>
-            <ListItem button key={'user'}>
+            <ListItem button key={'ranking'}>
               <ListItemIcon><InboxIcon /> </ListItemIcon>
-              <ListItemText primary={'User'} onClick={handleClickUser}/>
+              <ListItemText primary={'Ranking'} onClick={handleClickUser}/>
             </ListItem>
             <ListItem button key={'match'}>
               <ListItemIcon><MailIcon /> </ListItemIcon>
