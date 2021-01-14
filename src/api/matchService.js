@@ -98,7 +98,27 @@ export const createMatch = async(id) => {
       });
   }
 
+  export const getUserMatch = async () => {
+    const url = API_BASE_URL + '/match/mymatch';
+    const res = await axios.get(url, { 
+        headers : {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem(ACCESS_TOKEN_NAME)
+        }
+    });
+  return res;
+  };
 
+  export const getMatchInfo = async (id) => {
+    const url = API_BASE_URL + '/match/' + id;
+    const res = await axios.get(url, { 
+        headers : {
+            'Content-Type': 'application/json',
+            'auth-token': localStorage.getItem(ACCESS_TOKEN_NAME)
+        }
+    });
+  return res;
+  };
 
   // export const getRoomInfo = async(id) => {
   //   const url = API_BASE_URL + "/room/" + id;
