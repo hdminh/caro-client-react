@@ -7,6 +7,7 @@ import Room from "./page/Room";
 import Match from "./page/Match";
 import History from "./page/History";
 import LoginForm from "./page/LoginForm";
+import Ranking from './page/Ranking';
 import RegisterForm from "./page/RegisterForm";
 import PrivateRoute from "./utils/PrivateRoute";
 import Alert from "@material-ui/lab/Alert";
@@ -79,6 +80,9 @@ function App(props) {
               </PrivateRoute>
               <PrivateRoute path="/user">
                 <User setError={setError} setLoading={setLoading}/>
+              </PrivateRoute>
+              <PrivateRoute path="/rank">
+                <Ranking setError={setError} setLoading={setLoading}/>
               </PrivateRoute>
               <PrivateRoute path="/history">
                 <History setError={setError} setLoading={setLoading} />

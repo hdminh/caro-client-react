@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import '../App.css';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "../App.css";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 
-import Board from '../components/Board';
-import { handleClickInMatch, endMatchSock } from '../socket/matchSocket';
-import { ioClient } from '../socket/index';
-import { playMatch, surrender } from '../api/matchService';
-import { ContactSupportOutlined, PinDropSharp } from '@material-ui/icons';
-import { getCurrentUser, getUserId } from '../api/authService';
-import Button from '@material-ui/core/Button';
-import { Chat } from '../components';
+import Board from "../components/Board";
+import { handleClickInMatch, endMatchSock } from "../socket/matchSocket";
+import { ioClient } from "../socket/index";
+import { playMatch, surrender } from "../api/matchService";
+import { ContactSupportOutlined, PinDropSharp } from "@material-ui/icons";
+import { getCurrentUser, getUserId } from "../api/authService";
+import Button from "@material-ui/core/Button";
+import { Chat } from "../components";
 // import  calculateWinner  from '../api/GameService';
-
 
 function Match(props) {
   const [history, setHistory] = useState([{ squares: Array(400).fill(null) }]);
@@ -24,7 +23,7 @@ function Match(props) {
   const [xIsNext, setXIsNext] = useState(true);
   const [canMove, setCanMove] = useState(true);
   const [status, setStatus] = useState("play");
-  const [infor,setInfor]=useState({});
+  const [infor, setInfor] = useState({});
   const [timeCount, settimeCount] = useState(60);
   const [oponentMove, setOponentMove] = useState();
   let { id } = useParams();
@@ -36,37 +35,34 @@ function Match(props) {
   //   setXIsNext((step % 2) === 0);
   // }
 
-
   const handleNewMove = (i) => {
     const clickhistory = history.slice(0, stepNumber + 1);
     const current = clickhistory[clickhistory.length - 1];
     const squares = current.squares.slice();
-    squares[i] = xIsNext ? 'X' : 'O';
+    squares[i] = xIsNext ? "X" : "O";
     setXIsNext(!xIsNext);
     console.log(i);
     console.log(xIsNext);
-    setHistory(clickhistory.concat([
-      {
-        squares: squares,
-        latestMoveSquare: i
-      }
-    ]));
+    setHistory(
+      clickhistory.concat([
+        {
+          squares: squares,
+          latestMoveSquare: i,
+        },
+      ])
+    );
     setStepNumber(clickhistory.length);
-  }
+  };
 
   const updateStatusWinner = (winner) => {
     if (winner == "-1") {
       setStatus("playing");
     } else if (JSON.stringify(winner) == getUserId()) {
       setStatus("you win");
-
     } else {
       setStatus("you lose");
-
     }
-
-  }
-
+  };
 
   // ioClient.off("opponent_move");
   // ioClient.on("opponent_move", (data) => {
@@ -77,26 +73,26 @@ function Match(props) {
   ioClient.off("force_disconnect");
   ioClient.on("force_disconnect", () => {
     endMatchSock();
-  })
+  });
   ioClient.off("opponent_move");
-  ioClient.on("opponent_move", (data) => {
-    handleNewMove(JSON.stringify(data.i));
-    setCanMove(true);
-  },[])
+  ioClient.on(
+    "opponent_move",
+    (data) => {
+      handleNewMove(JSON.stringify(data.i));
+      setCanMove(true);
+    },
+    []
+  );
 
   ioClient.on("time_out", (data) => {
     console.log(data);
     console.log(JSON.stringify(data));
-    if(data==1){
+    if (data == 1) {
       setStatus("Bạn đa thắng vì đối thủ đã hết thời gian đánh");
-    }else{
+    } else {
       setStatus("Bạn đa thua vì đã hết thời gian đánh");
-
     }
   });
-
-
-
 
   const handleClick = async (i) => {
     if (canMove) {
@@ -112,7 +108,7 @@ function Match(props) {
         setCanMove(false);
       }
     }
-  }
+  };
 
   const handleSurrender = async () => {
     const result = await surrender(id);
@@ -122,15 +118,14 @@ function Match(props) {
       updateStatusWinner(result.winner);
       endMatchSock();
     }
-  }
+  };
 
   //move
   const current = history[history.length - 1];
   useEffect(() => {
-  console.log(localStorage.getItem("player"));
-  setInfor(localStorage.getItem("player"));
-  },[]);
-
+    console.log(localStorage.getItem("player"));
+    setInfor(localStorage.getItem("player"));
+  }, []);
 
   //   console.log(current);
   //   const squares = current.squares.slice();
@@ -153,14 +148,11 @@ function Match(props) {
     <Container component="main">
       <CssBaseline />
       <Typography component="h1" variant="h5">
-          TRAN DAU
-         </Typography>
+        TRAN DAU
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={8}>
-          <Board
-            squares={current.squares}
-            onClick={(i) => handleClick(i)}
-          />
+          <Board squares={current.squares} onClick={(i) => handleClick(i)} />
         </Grid>
         <Grid item xs={4}>
           <Button
@@ -170,7 +162,7 @@ function Match(props) {
             onClick={endMatchSock}
           >
             End game
-    </Button>
+          </Button>
           <Button
             type="submit"
             variant="contained"
@@ -178,7 +170,7 @@ function Match(props) {
             onClick={endMatchSock}
           >
             Xin hòa
-    </Button>
+          </Button>
           <Button
             type="submit"
             variant="contained"
@@ -186,28 +178,28 @@ function Match(props) {
             onClick={handleSurrender}
           >
             Xin hàng
-    </Button>
-    <br/>
-    <div> 
-      {infor==null ?(<p>loading...</p>) : (
-        <p>Người chơi 1 : {infor['player1'] } Người chơi 2 : {infor.player2 } </p>
-      )}
-      
-
-</div>   
-    <div>{status}</div>
-    <br/>
-    <Chat name={getCurrentUser()} room={JSON.stringify(props.title)}/>
+          </Button>
+          <br />
+          <div>
+            {infor == null ? (
+              <p>loading...</p>
+            ) : (
+              <p>
+                Người chơi 1 : {infor["player1"]} Người chơi 2 : {infor.player2}{" "}
+              </p>
+            )}
+          </div>
+          <div>{status}</div>
+          <br />
+          <Chat name={getCurrentUser()} room={JSON.stringify(props.title)} />
         </Grid>
       </Grid>
-
     </Container>
-
 
     // <div className="game">
     //   <div className="game-board">
     //   <Typography component="h1" variant="h5">
-    //             TRAN DAU 
+    //             TRAN DAU
     //     </Typography>
     //     <Board
     //       squares={current.squares}
@@ -250,7 +242,5 @@ function Match(props) {
     // </div>
   );
 }
-
-
 
 export default Match;

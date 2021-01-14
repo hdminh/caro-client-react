@@ -8,6 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { getUserId } from "../api/authService";
 import { Redirect } from "react-router-dom";
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -53,9 +54,11 @@ export default function MatchTable(props) {
           <TableHead>
             <TableRow>
               <StyledTableCell>ID</StyledTableCell>
-              <StyledTableCell>Winner</StyledTableCell>
-              <StyledTableCell>Status</StyledTableCell>
-              <StyledTableCell align="right">History</StyledTableCell>
+              <StyledTableCell>Kết quả</StyledTableCell>
+              <StyledTableCell>Trạng thái</StyledTableCell>
+              <StyledTableCell>Số nước đi</StyledTableCell>
+              <StyledTableCell>Tin nhắn</StyledTableCell>
+              <StyledTableCell align="right">Xem lịch sử</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -76,8 +79,16 @@ export default function MatchTable(props) {
                         : "Finished"
                       : "Waiting"}
                   </StyledTableCell>
+                  <StyledTableCell>
+                    {row.history.length}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {row.chat.length}
+                  </StyledTableCell>
                   <StyledTableCell align="right">
-                    <Button onClick={() => handleClick(row)}>View</Button>
+                    <Button onClick={() => handleClick(row)}>
+                      <VisibilityIcon />
+                    </Button>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
