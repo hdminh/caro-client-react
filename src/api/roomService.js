@@ -2,6 +2,7 @@ import axios from "axios";
 import { API_BASE_URL, ACCESS_TOKEN_NAME } from "../constants/apiContants";
 
 export const joinRoom = async (id) => {
+  console.log(id);
   const data = {
     idRoom: Number(id),
   };

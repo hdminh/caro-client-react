@@ -76,12 +76,13 @@ function Room(props) {
     console.log(enemyId);
     inviteRoomSock(roomId,enemyId,getCurrentUser())
   }
+  
 
   return (
     <Container component="main">
       <CssBaseline />
       <Typography component="h1" variant="h5">
-      PHÒNG ĐẤU
+      PHÒNG ĐẤU {roomId}
        </Typography>
        <br/>
        {roomId !== null &&
@@ -94,11 +95,11 @@ function Room(props) {
               Ready
     </Button>}
       <Grid container spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
 
     {players !== null && players.map((player) => <UserInfoCard key={player._id} user={player}></UserInfoCard>)}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <UserOnline handleInvite={handleInvite}/>
         </Grid>
        
