@@ -27,7 +27,7 @@ function MatchHistory(props) {
   let { id } = useParams();
   const handleNextMove = () => {
     if (currentPos < clickHistory.length) setCurrentPos(currentPos + 1);
-    let clicks = clickHistory.slice(0, currentPos);
+    let clicks = clickHistory.slice(0, currentPos + 1);
     let squaresList = Array(400).fill(null);
     let index = 0;
     clicks.forEach((click) => {
@@ -49,25 +49,24 @@ function MatchHistory(props) {
     setHistory(squaresList);
   };
 
-  const mapHistory = () => {
+  const mapHistory = async () => {
     setClickHistory([])
     getMatchInfo(id)
       .then((res) => {
-        console.log(res.data);
         res.data.history.forEach((his) => {
           let pos = his.y * 20 + his.x;
           setClickHistory((clickHistory) => clickHistory.concat(pos));
         });
-        console.log("chat", res.data.chat);
-        console.log("id", res.data);
         setMessages(res.data.chat);
         setRoom("Lịch sử chat");
       })
-      .catch((err) => {});
+      .catch((err) => {
+        props.setError(err.message)
+      });
   };
 
   useEffect(() => {
-    mapHistory(props.history);
+    mapHistory(props.history)
   }, []);
 
   const handleClick = (i) => {};
@@ -76,6 +75,11 @@ function MatchHistory(props) {
     <div>
       <Grid container spacing={0}>
         <Grid item xs={2}>
+          <Grid item>
+            <Typography>
+              Nước đi thứ {currentPos}
+            </Typography>
+          </Grid>
           <Grid item>
             <Button onClick={handlePrevMove}>Nước đi trước</Button>
           </Grid>
