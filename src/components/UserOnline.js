@@ -94,8 +94,14 @@ export default function UserList(props) {
                         data.map((item, index) => <li key={item.name}>
                             <Grid container spacing={2}>
                                 <Grid item xs={6}>
-                                    {item.name}
+                                    {/* {item.name} */}
+                                    <Button
+                                    width="120"
+                                        variant="contained"
+                                        color="Secondary"
+                                    >{item.name} </Button>
                                 </Grid>
+                                {props.Invite &&
                                 <Grid item xs={6}>
                                     <Button
                                         width="120"
@@ -103,6 +109,7 @@ export default function UserList(props) {
                                         color="default" onClick={() => handleButtonInvite(index)}
                                     >Invite </Button>
                                 </Grid>
+                                    }
                             </Grid>
 
                         </li>))}

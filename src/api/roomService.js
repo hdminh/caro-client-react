@@ -57,6 +57,7 @@ export const leaveRoom = async (id) => {
   };
   const res = await axios.post(API_BASE_URL + "/room/leaveRoom", data, {
     headers: {
+      "auth-token": localStorage.getItem(ACCESS_TOKEN_NAME),
       "Content-Type": "application/json",
     },
   });

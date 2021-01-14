@@ -3,10 +3,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withRouter } from "react-router-dom";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
 import { ACCESS_TOKEN_NAME } from "../constants/apiContants";
 import { getUserToken, getCurrentUser } from "../api/authService";
-import { joinRoomSock, addRoomScok } from "../socket/roomSocket";
+import { joinRoomSock, playNowSock ,createdRoomSock} from "../socket/roomSocket";
 import { ioClient } from "../socket/index";
 import UserOnline from "../components/UserOnline";
 import Dialog from "../components/Dialog";
@@ -71,12 +73,12 @@ function Home(props) {
           props.setError("Error finding room");
         }
       })
-    }
-    const acceptInvite=() =>{
-      console.log("accept invite");
-      setOpenDialog(false);
-      handleJoin({id:inviteRoomId});
-    }
+  }
+  const acceptInvite = () => {
+    console.log("accept invite");
+    setOpenDialog(false);
+    handleJoin({ id: inviteRoomId });
+  }
 
   const handleAddNew = () => {
     addRoom().then((result) => {
@@ -91,6 +93,10 @@ function Home(props) {
       }
     });
   };
+  const handlePlayNow = () => {
+    playNowSock(3);
+
+  }
   // const acceptInvite = () => {
   //   console.log("accept invite");
   //   setOpenDialog(false);
@@ -119,6 +125,37 @@ function Home(props) {
       setOpenDialog(true);
       console.log(roomId + name);
     });
+    ioClient.on("join_room_from_play_now", ( roomId) => {
+
+      handleJoin({ id: roomId });
+      console.log(roomId +"play no");
+    });
+    
+
+    ioClient.on("create_room_from_play_now", async (socketId) => {
+      addRoom().then((result) => {
+        if (result.status < 400) {
+          props.setError(null);
+          console.log("created room");
+          console.log(result);
+          console.log(result.data.idRoom);
+          //send back to enemy
+          createdRoomSock(result.data.idRoom,socketId);
+          // ioClient.emit("room_created_play_now",{result.data.idRoom,socketId});
+          props.history.push("/room/" + result.data._id);
+          // joinRoomSock(result.data._id);
+          joinRoomSock(result.data._id);
+        } else {
+          props.setError("Error add new room");
+        }
+      });
+      // const result = await createMatch(room_Id);
+      // console.log(result);
+      // if (result._id) {
+      //   createdMatchSock(roomId, result._id);
+      //   localStorage.setItem("player", JSON.stringify({ player1, player2 }));
+      // }
+    });
   }, []);
   function redirectToLogin() {
     props.history.push("/login");
@@ -144,57 +181,75 @@ function Home(props) {
   }));
   const classes = useStyles();
   return (
-    <div className="App">
-      <form
-        className={classes.form}
-        noValidate
-        onSubmit={handleSubmit((data) => handleJoin(data))}
-      >
-        <TextField
-          variant="outlined"
-          margin="normal"
-          inputRef={register}
-          required
-          name="id"
-          label="Input Room ID"
-          type="text"
-          id="id"
-          autoComplete="current-id"
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-        >
-          Join room
+    // <div className="App">
+    <Container component="main">
+      <CssBaseline />
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <br/>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={handleSubmit((data) => handleJoin(data))}
+          >
+            <TextField
+              variant="outlined"
+              margin="normal"
+              inputRef={register}
+              required
+              name="id"
+              label="Input Room ID"
+              type="text"
+              id="id"
+              autoComplete="current-id"
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Join room
         </Button>
-      </form>
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        className={classes.submit}
-        onClick={handleAddNew}
-      >
-        Add new room
+          </form>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={handleAddNew}
+          >
+            Add new room
       </Button>
-      <UserOnline />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={handlePlayNow}
+          >
+            Play Now
+      </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <UserOnline Invite={false} />
+        </Grid>
+      </Grid>
       <Dialog
         setOpenDialog={setOpenDialog}
         openDialog={openDialog}
         content={contentDialog}
         setResult={acceptInvite}
       />
-      <div>
-        <Grid container spacing={4}>
-          {listRoom !== null &&
-            listRoom.map((room) => (
-              <RoomInfo data={room} joinRoom={handleJoin} />
-            ))}
-        </Grid>
-      </div>
-    </div>
+
+      <Grid container spacing={4}>
+        
+        {listRoom !== null &&
+          listRoom.map((room) => (
+            <RoomInfo data={room} joinRoom={handleJoin} />
+          ))}
+      </Grid>
+    </Container>
   );
 }
 

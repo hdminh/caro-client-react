@@ -89,9 +89,10 @@ function LoginForm(props) {
             ACCESS_TOKEN_NAME,
             response.data.datalogin.token
           );
+          console.log(response.data.datalogin.firstname);
           localStorage.setItem(
             "user",
-            response.data.datalogin.firstname
+            JSON.stringify(response.data.datalogin.firstname)
           );
           redirectToHome();
         }

@@ -22,3 +22,12 @@ export const inviteRoomSock=(roomId,socketId,name) =>{
     console.log(roomId+socketId+name);
     ioClient.emit("invite_room",{roomId,socketId,name});
 }
+
+export const playNowSock=(cup) =>{
+    ioClient.emit("play_now",({cup}));
+}
+
+export const createdRoomSock = (roomId,socketId) => {
+    console.log(roomId+socketId +"ne");
+    ioClient.emit("room_created_play_now", {roomId,socketId});
+} 
