@@ -11,6 +11,7 @@ import RegisterForm from "./page/RegisterForm";
 import PrivateRoute from "./utils/PrivateRoute";
 import Alert from "@material-ui/lab/Alert";
 import User from "./page/User";
+import MatchHistory from './page/MatchHistory';
 import NotFound from "./page/NotFound";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -37,8 +38,7 @@ function App(props) {
   const [auth, setAuth] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-
+  
   return (
     <Router>
       <div className="App">
@@ -81,7 +81,10 @@ function App(props) {
                 <User setError={setError} setLoading={setLoading}/>
               </PrivateRoute>
               <PrivateRoute path="/history">
-                <History setError={setError} setLoading={setLoading}/>
+                <History setError={setError} setLoading={setLoading} />
+              </PrivateRoute>
+              <PrivateRoute path="/detail/:id">
+                <MatchHistory setError={setError} setLoading={setLoading} />
               </PrivateRoute>
               <Route path="" component={NotFound} />
             </Switch>
