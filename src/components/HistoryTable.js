@@ -30,8 +30,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useStyles = makeStyles({
   table: {
-    width: "100%",
-    marginTop: "20px",
+    width: "100%"
   },
 });
 

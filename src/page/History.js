@@ -7,10 +7,6 @@ import MatchHistory from "../components/MatchHistory";
 import { getUserMatch } from "../api/matchService";
 
 const useStyles = makeStyles((theme) => ({
-  search: {
-    display: "flex",
-    marginTop: "100px",
-  },
   input: {
     width: "50%",
   },

@@ -50,6 +50,7 @@ function MatchHistory(props) {
   };
 
   const mapHistory = () => {
+    setClickHistory([])
     getMatchInfo(id)
       .then((res) => {
         console.log(res.data);
@@ -73,20 +74,22 @@ function MatchHistory(props) {
 
   return (
     <div>
-      <Grid container spacing={10}>
-        <Grid item>
+      <Grid container spacing={0}>
+        <Grid item xs={2}>
+          <Grid item>
+            <Button onClick={handlePrevMove}>Nước đi trước</Button>
+          </Grid>
+          <Grid item>
+            <Button onClick={handleNextMove}>Nước đi kế tiếp</Button>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={7}>
           <Typography component="h1" variant="h5">
             Lịch sử trận đấu
           </Typography>
           <Board squares={history} onClick={(i) => handleClick(i)} />
-          <Grid item>
-            <Button onClick={handlePrevMove}>Prev</Button>
-          </Grid>
-          <Grid item>
-            <Button onClick={handleNextMove}>Next</Button>
-          </Grid>
         </Grid>
-
         <Grid item xs={3}>
           <ChatHistory room={room} name={name} messages={messages} />
         </Grid>
