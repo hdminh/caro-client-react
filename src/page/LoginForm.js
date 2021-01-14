@@ -89,6 +89,10 @@ function LoginForm(props) {
             ACCESS_TOKEN_NAME,
             response.data.datalogin.token
           );
+          localStorage.setItem(
+            "user",
+            response.data.datalogin.firstname
+          );
           redirectToHome();
         }
       })
@@ -209,7 +213,7 @@ function LoginForm(props) {
           <br />
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/resetpassword" variant="body2">
                 Forgot password?
               </Link>
             </Grid>

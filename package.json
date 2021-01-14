@@ -22,7 +22,9 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.1",
     "react-scroll-to-bottom": "^3.0.0",
+    "react-validation": "^3.0.7",
     "socket.io-client": "^3.0.4",
+    "validation": "0.0.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
