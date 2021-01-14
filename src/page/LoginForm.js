@@ -73,11 +73,12 @@ function LoginForm(props) {
     console.log(e);
     props.setLoading(true);
     // let result = await login(e.username, e.password);
-    // console.log('res', result); 
+    // console.log('res', result);
     // if (result.status > 300) {
     //   props.setLoading(false);
     // }
-    login(e.username, e.password).then(response => {
+    login(e.username, e.password)
+      .then((response) => {
         props.setLoading(false);
         console.log(response);
         if (response.status === 200) {

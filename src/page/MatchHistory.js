@@ -53,8 +53,9 @@ function MatchHistory(props) {
     setClickHistory([])
     getMatchInfo(id)
       .then((res) => {
+        console.log(res.data.history)
         res.data.history.forEach((his) => {
-          let pos = his.y * 20 + his.x;
+          let pos = (his.y) * 20 + his.x;
           setClickHistory((clickHistory) => clickHistory.concat(pos));
         });
         setMessages(res.data.chat);
