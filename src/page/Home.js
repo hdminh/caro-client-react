@@ -41,25 +41,28 @@ function Home(props) {
   const [listRoom, setListRoom] = useState(null);
 
   const getListRoomInfo = () => {
-    props.setLoading(true);
+    // props.setLoading(true);
     getListRoom()
       .then((res) => {
-        props.setLoading(false);
+        // props.setLoading(false);
         console.log(res.data);
         setListRoom(res.data);
       })
       .catch((err) => {
-        props.setLoading(false);
+        // props.setLoading(false);
 
         props.setError(err.message);
       });
   };
 
   const handleJoin = (data) => {
+    // props.setLoading(true);
     console.log(data);
-    joinRoom(data.idRoom)
+    joinRoom(data.id)
       .then((result) => {
+        // props.setLoading(false);
         if (result.status < 400) {
+
           props.setError(null);
           joinRoomSock(result.data._id);
           console.log(result);
@@ -76,9 +79,7 @@ function Home(props) {
     }
 
   const handleAddNew = () => {
-    props.setLoading(true);
     addRoom().then((result) => {
-      props.setLoading(true);
       if (result.status < 400) {
         props.setError(null);
         console.log(result);
@@ -90,15 +91,20 @@ function Home(props) {
       }
     });
   };
-  const acceptInvite = () => {
-    console.log("accept invite");
-    setOpenDialog(false);
-    handleJoin();
-  };
+  // const acceptInvite = () => {
+  //   console.log("accept invite");
+  //   setOpenDialog(false);
+  //   handleJoin();
+  // };
 
   // const  joinRoomSock=((data) =>{
   //   ioClient.emit("join_room",{data});
   // })
+  // if (token) {
+  //   ioClient.off("online");
+  //   ioClient.emit("online", getCurrentUser());
+  // }
+
 
   useEffect(() => {
     if (!localStorage.getItem(ACCESS_TOKEN_NAME)) redirectToLogin();
@@ -152,7 +158,7 @@ function Home(props) {
           name="id"
           label="Input Room ID"
           type="text"
-          id="idRoom"
+          id="id"
           autoComplete="current-id"
         />
         <Button

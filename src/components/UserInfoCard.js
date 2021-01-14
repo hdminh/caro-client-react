@@ -9,10 +9,11 @@ import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 345
+    minWidth: 120
   },
   media: {
-    height: 345,
+    height: 60,
+    width: 60
   },
 });
 

@@ -77,6 +77,7 @@ export default function UserList(props) {
                 setBusy(false);
         })
         if(isBusy){
+            console.log("playing in user");
             ioClient.off("get_user_online");
             getUserOnlineSock();
             }
