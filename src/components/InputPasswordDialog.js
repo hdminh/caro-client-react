@@ -24,6 +24,8 @@ export default function InputPasswordDialog(props) {
       setLink("/room/" + props.id);
       setRedirect(true);
     }
+    setAlert("")
+    setText("")
     props.setOpen(false);
   };
 
