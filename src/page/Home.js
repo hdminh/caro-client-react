@@ -3,18 +3,24 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withRouter } from "react-router-dom";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 import { useForm } from "react-hook-form";
 import { ACCESS_TOKEN_NAME } from "../constants/apiContants";
 import { getUserToken, getCurrentUser } from "../api/authService";
-import { joinRoomSock, playNowSock ,createdRoomSock} from "../socket/roomSocket";
+import {
+  joinRoomSock,
+  playNowSock,
+  createdRoomSock,
+} from "../socket/roomSocket";
 import { ioClient } from "../socket/index";
 import UserOnline from "../components/UserOnline";
 import Dialog from "../components/Dialog";
 import Grid from "@material-ui/core/Grid";
 import { joinRoom, addRoom, getListRoom } from "../api/roomService";
 import RoomInfo from "../components/RoomInfo";
+import InputPasswordDialog from "../components/InputPasswordDialog";
+
 // import io from 'socket.io-client'
 
 //const ioClient = io.connect("https://caro-game-api.herokuapp.com/");
@@ -23,6 +29,9 @@ function Home(props) {
   const [openDialog, setOpenDialog] = useState(false);
   const [contentDialog, setContentDialog] = useState("accept");
   const [inviteRoomId, setInviteRoomId] = useState();
+  const [roomId, setRoomId] = useState("");
+  const [typeInput, setTypeInput] = useState("");
+  const [openInputPassword, setOpenInputPassword] = useState(false);
   const { register, handleSubmit } = useForm();
   const token = getUserToken();
   const name = getCurrentUser();
@@ -43,60 +52,70 @@ function Home(props) {
   const [listRoom, setListRoom] = useState(null);
 
   const getListRoomInfo = () => {
-    // props.setLoading(true);
+    props.setLoading(true);
     getListRoom()
       .then((res) => {
-        // props.setLoading(false);
+        props.setLoading(false);
         console.log(res.data);
         setListRoom(res.data);
       })
       .catch((err) => {
-        // props.setLoading(false);
+        props.setLoading(false);
 
         props.setError(err.message);
       });
   };
 
   const handleJoin = (data) => {
-    // props.setLoading(true);
     console.log(data);
-    joinRoom(data.id)
-      .then((result) => {
-        // props.setLoading(false);
-        if (result.status < 400) {
+    props.setError(null);
+    setRoomId(data.id);
+    setTypeInput("join");
+    setOpenInputPassword(true);
+    // joinRoom()
+    //   .then((result) => {
+    //     props.setLoading(false);
+    //     if (result.status < 400) {
+    //       props.setLoading(false);
+    //       props.setError(null);
+    //       joinRoomSock(result.data._id);
+    //     } else {
+    //       props.setError("Error finding room");
+    //     }
+    //   })
+    //   .catch((err) => {});
+  };
 
-          props.setError(null);
-          joinRoomSock(result.data._id);
-          console.log(result);
-          props.history.push("/room/" + result.data._id);
-        } else {
-          props.setError("Error finding room");
-        }
-      })
-  }
   const acceptInvite = () => {
     console.log("accept invite");
     setOpenDialog(false);
     handleJoin({ id: inviteRoomId });
-  }
+  };
 
   const handleAddNew = () => {
-    addRoom().then((result) => {
-      if (result.status < 400) {
-        props.setError(null);
-        console.log(result);
-        props.history.push("/room/" + result.data._id);
-        // joinRoomSock(result.data._id);
-        joinRoomSock(result.data._id);
-      } else {
+    props.setLoading(true);
+    addRoom()
+      .then((result) => {
+        if (result.status < 400) {
+          props.setLoading(false);
+          props.setError(null);
+          setRoomId(result.data._id);
+          setTypeInput("new");
+          setOpenInputPassword(true);
+          // joinRoomSock(result.data._id);
+          joinRoomSock(result.data._id);
+        } else {
+          props.setError("Error add new room");
+        }
+      })
+      .catch((err) => {
+        props.setLoading(false);
         props.setError("Error add new room");
-      }
-    });
+      });
   };
   const handlePlayNow = () => {
     playNowSock(3);
-
-  }
+  };
   // const acceptInvite = () => {
   //   console.log("accept invite");
   //   setOpenDialog(false);
@@ -111,7 +130,6 @@ function Home(props) {
   //   ioClient.emit("online", getCurrentUser());
   // }
 
-
   useEffect(() => {
     if (!localStorage.getItem(ACCESS_TOKEN_NAME)) redirectToLogin();
     if (token) {
@@ -125,12 +143,10 @@ function Home(props) {
       setOpenDialog(true);
       console.log(roomId + name);
     });
-    ioClient.on("join_room_from_play_now", ( roomId) => {
-
+    ioClient.on("join_room_from_play_now", (roomId) => {
       handleJoin({ id: roomId });
-      console.log(roomId +"play no");
+      console.log(roomId + "play no");
     });
-    
 
     ioClient.on("create_room_from_play_now", async (socketId) => {
       addRoom().then((result) => {
@@ -140,7 +156,7 @@ function Home(props) {
           console.log(result);
           console.log(result.data.idRoom);
           //send back to enemy
-          createdRoomSock(result.data.idRoom,socketId);
+          createdRoomSock(result.data.idRoom, socketId);
           // ioClient.emit("room_created_play_now",{result.data.idRoom,socketId});
           props.history.push("/room/" + result.data._id);
           // joinRoomSock(result.data._id);
@@ -186,7 +202,7 @@ function Home(props) {
       <CssBaseline />
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <br/>
+          <br />
           <form
             className={classes.form}
             noValidate
@@ -210,7 +226,7 @@ function Home(props) {
               className={classes.submit}
             >
               Join room
-        </Button>
+            </Button>
           </form>
           <Button
             type="submit"
@@ -220,7 +236,7 @@ function Home(props) {
             onClick={handleAddNew}
           >
             Add new room
-      </Button>
+          </Button>
           <Button
             type="submit"
             variant="contained"
@@ -229,7 +245,7 @@ function Home(props) {
             onClick={handlePlayNow}
           >
             Play Now
-      </Button>
+          </Button>
         </Grid>
         <Grid item xs={6}>
           <UserOnline Invite={false} />
@@ -242,8 +258,16 @@ function Home(props) {
         setResult={acceptInvite}
       />
 
+      <InputPasswordDialog
+        id={roomId}
+        open={openInputPassword}
+        setOpen={setOpenInputPassword}
+        setError={props.setError}
+        joinRoomSock={joinRoomSock}
+        type={typeInput}
+      />
+
       <Grid container spacing={4}>
-        
         {listRoom !== null &&
           listRoom.map((room) => (
             <RoomInfo data={room} joinRoom={handleJoin} />
