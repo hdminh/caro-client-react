@@ -73,10 +73,11 @@ function Home(props) {
         props.setLoading(false)
         if (res.data.password) {
           props.setError(null);
-          setRoomId(data.id);
+          setRoomId(data.idRoom);
           setTypeInput("join");
           setOpenInputPassword(true);
         } else {
+          console.log('idRoom', data.idRoom)
           joinRoom(data.idRoom, null)
             .then((result) => {
               props.setLoading(false);
