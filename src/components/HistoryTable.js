@@ -34,6 +34,21 @@ const useStyles = makeStyles({
   },
 });
 
+const getWinnerStatus = (row) => {
+  let status = "Chưa xác định";
+  console.log(getUserId())
+  console.log(""+row.winner+"")
+  console.log(""+row.winner+"" == getUserId())
+  
+  if (row.winner) {
+    if (getUserId() == (row.winner.toString())) status = "Thắng"
+    else if (row.winner == 0) status = "Hòa"
+    else if (row.winner == -1) status = "Chưa xác định"
+    else if (status !== null) status = "Thua"
+  }
+  return status;
+}
+
 export default function MatchTable(props) {
   const classes = useStyles();
   const [redirect, setRedirect] = useState(false);
@@ -67,9 +82,7 @@ export default function MatchTable(props) {
                 <StyledTableRow key={row._id}>
                   <StyledTableCell align="left"> {row._id} </StyledTableCell>
                   <StyledTableCell>
-                    {row.winner && row.winner === getUserId()
-                      ? "Thắng"
-                      : "Thua"}
+                    {getWinnerStatus(row)}
                   </StyledTableCell>
                   <StyledTableCell>
                     {row.status === 1
