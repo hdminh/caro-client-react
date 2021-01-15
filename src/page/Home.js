@@ -227,7 +227,7 @@ function Home(props) {
               margin="normal"
               inputRef={register}
               required
-              name="id"
+              name="idRoom"
               label="Input Room ID"
               type="text"
               id="idRoom"
