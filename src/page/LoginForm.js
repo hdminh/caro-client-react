@@ -36,14 +36,14 @@ function LoginForm(props) {
         }
       },
       (error) => {
-        props.setError(error.message);
+        props.setError("Đăng nhập Google không thành công");
       }
     );
   };
   const onFailureGoogle = (response) => {
     console.log("failure" + response);
     console.log(response);
-    props.setError("Login Google failed!");
+    props.setError("Đăng nhập Google không thành công");
   };
   const responseFacebook = (responseFB) => {
     console.log(responseFB);
@@ -61,7 +61,7 @@ function LoginForm(props) {
         }
       },
       (error) => {
-        props.setError(error.message);
+        props.setError("Đăng nhập facebook không thành công");
       }
     );
   };
@@ -100,7 +100,7 @@ function LoginForm(props) {
       })
       .catch((error) => {
         props.setLoading(false);
-        props.setError(error.message);
+        props.setError("Đăng nhập không thành công");
       });
   };
   const redirectToHome = () => {

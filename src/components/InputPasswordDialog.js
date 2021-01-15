@@ -6,7 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { joinRoom, setPassword } from "../api/roomService";
+import { getRoomInfo, joinRoom, setPassword } from "../api/roomService";
 import { Redirect } from "react-router-dom";
 
 export default function InputPasswordDialog(props) {
@@ -24,17 +24,17 @@ export default function InputPasswordDialog(props) {
       setLink("/room/" + props.id);
       setRedirect(true);
     }
-    setAlert("")
-    setText("")
+    setAlert("");
+    setText("");
     props.setOpen(false);
   };
 
   const handlePassword = () => {
-    if (text === null || text === "") {
-      setAlert("Không được để trống!");
-    } else {
-      setAlert("");
-      if (props.type === "new") {
+    if (props.type === "new") {
+      if (text === null || text === "") {
+        setAlert("Không được để trống!");
+      } else {
+        setAlert("");
         setPassword(props.id, text)
           .then((res) => {
             if (res.status < 400) {
@@ -47,20 +47,20 @@ export default function InputPasswordDialog(props) {
           .catch((err) => {
             props.setError("Đặt mật khẩu không thành công");
           });
-      } else {
-        joinRoom(props.id, text)
-          .then((res) => {
-            props.joinRoomSock(res.data._id);
-            setLink("/room/" + res.data._id);
-            props.setOpen(false);
-            props.setError(null);
-            setRedirect(true);
-          })
-          .catch((err) => {
-            props.setError("Vào bàn không thành công");
-            setAlert("Mật khẩu sai!");
-          });
       }
+    } else {
+      joinRoom(props.id, text)
+        .then((res) => {
+          props.joinRoomSock(res.data._id);
+          setLink("/room/" + res.data._id);
+          props.setOpen(false);
+          props.setError(null);
+          setRedirect(true);
+        })
+        .catch((err) => {
+          props.setError("Vào bàn không thành công");
+          setAlert("Mật khẩu sai!");
+        });
     }
   };
 

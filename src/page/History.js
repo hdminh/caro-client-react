@@ -34,7 +34,7 @@ export default function History(props) {
       })
       .catch((error) => {
         props.setLoading(false);
-        props.setError(error.message);
+        props.setError("Lấy danh sách bàn chơi không thành công");
       });
   };
 

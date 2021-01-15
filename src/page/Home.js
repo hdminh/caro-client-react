@@ -17,7 +17,7 @@ import { ioClient } from "../socket/index";
 import UserOnline from "../components/UserOnline";
 import Dialog from "../components/Dialog";
 import Grid from "@material-ui/core/Grid";
-import { joinRoom, addRoom, getListRoom } from "../api/roomService";
+import { joinRoom, addRoom, getListRoom, getIdRoomInfo } from "../api/roomService";
 import RoomInfo from "../components/RoomInfo";
 import InputPasswordDialog from "../components/InputPasswordDialog";
 
@@ -60,36 +60,50 @@ function Home(props) {
         setListRoom(res.data);
       })
       .catch((err) => {
-        props.setLoading(false);
-
-        props.setError(err.message);
+        props.setLoading(false)
+        props.setError("Lấy thông tin bàn chơi không thành công");
       });
   };
 
   const handleJoin = (data) => {
-    console.log(data);
-    props.setError(null);
-    setRoomId(data.id);
-    setTypeInput("join");
-    setOpenInputPassword(true);
-    // joinRoom()
-    //   .then((result) => {
-    //     props.setLoading(false);
-    //     if (result.status < 400) {
-    //       props.setLoading(false);
-    //       props.setError(null);
-    //       joinRoomSock(result.data._id);
-    //     } else {
-    //       props.setError("Error finding room");
-    //     }
-    //   })
-    //   .catch((err) => {});
+  console.log('dat', data.idRoom);
+    props.setLoading(true)
+    getIdRoomInfo(data.idRoom)
+      .then((res) => {
+        props.setLoading(false)
+        if (res.data.password) {
+          props.setError(null);
+          setRoomId(data.id);
+          setTypeInput("join");
+          setOpenInputPassword(true);
+        } else {
+          joinRoom(data.idRoom, null)
+            .then((result) => {
+              props.setLoading(false);
+              if (result.status < 400) {
+                props.setError(null);
+                joinRoomSock(result.data._id);
+                props.history.push("/room/" + res.data._id)
+              } else {
+                props.setError("Vào phòng không thành công");
+              }
+            })
+            .catch((err) => {
+              props.setLoading(false);
+              props.setError("Vào phòng không thành công");
+            });
+        }
+      })
+      .catch((err) => {
+        props.setLoading(false)
+        props.setError("Phòng chơi không tồn tại");
+      });
   };
 
   const acceptInvite = () => {
     console.log("accept invite");
     setOpenDialog(false);
-    handleJoin({ id: inviteRoomId });
+    handleJoin({ idRoom: inviteRoomId });
   };
 
   const handleAddNew = () => {
@@ -105,12 +119,12 @@ function Home(props) {
           // joinRoomSock(result.data._id);
           joinRoomSock(result.data._id);
         } else {
-          props.setError("Error add new room");
+          props.setError("Thêm phòng mới không thành công");
         }
       })
       .catch((err) => {
         props.setLoading(false);
-        props.setError("Error add new room");
+        props.setError("Thêm phòng mới không thành công");
       });
   };
   const handlePlayNow = () => {
@@ -144,7 +158,7 @@ function Home(props) {
       console.log(roomId + name);
     });
     ioClient.on("join_room_from_play_now", (roomId) => {
-      handleJoin({ id: roomId });
+      handleJoin({ idRoom: roomId });
       console.log(roomId + "play no");
     });
 
@@ -162,7 +176,7 @@ function Home(props) {
           // joinRoomSock(result.data._id);
           joinRoomSock(result.data._id);
         } else {
-          props.setError("Error add new room");
+          props.setError("Thêm phòng mới không thành công");
         }
       });
       // const result = await createMatch(room_Id);
@@ -216,7 +230,7 @@ function Home(props) {
               name="id"
               label="Input Room ID"
               type="text"
-              id="id"
+              id="idRoom"
               autoComplete="current-id"
             />
             <Button

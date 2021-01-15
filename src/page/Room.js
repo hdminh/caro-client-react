@@ -37,7 +37,7 @@ function Room(props) {
         }
       })
       .catch((error) => {
-        props.setError(error.message);
+        props.setError("Lấy thông tin phòng chơi không thành công");
       });
   };
   useEffect(() => {

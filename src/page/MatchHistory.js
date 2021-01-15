@@ -62,7 +62,7 @@ function MatchHistory(props) {
         setRoom("Lịch sử chat");
       })
       .catch((err) => {
-        props.setError(err.message)
+        props.setError("Lấy thông tin bàn chơi không thành công")
       });
   };
 

@@ -27,12 +27,12 @@ function RegisterForm(props) {
                 }
             })
             .catch(function (error) {
-              props.setError(error)
+              props.setError("Đăng ký không thành công")
             });
         }
       }).catch((error) => {
         console.log(error);
-        props.setError(error.message)
+        props.setError("Đăng ký không thành công")
       });
     }
     const redirect = () => {

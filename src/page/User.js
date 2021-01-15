@@ -24,7 +24,7 @@ function UserInfo(props) {
       })
       .catch((error) => {
         props.setLoading(false)
-        props.setError(error);
+        props.setError("Lấy thông tin không thành công");
       });
   };
 

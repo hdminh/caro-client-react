@@ -26,7 +26,7 @@ export default function User(props) {
         props.setLoading(false);
 
         console.log("error", error);
-        props.setError(error.message);
+        props.setError("Lấy thông tin ranking không thành công");
       });
   };
 

@@ -14,7 +14,8 @@ export const joinRoom = async (id, password) => {
       idRoom: Number(id)
     };
   }
-  console.log(data);
+  console.log(data)
+  
   const res = await axios.post(API_BASE_URL + "/room/joinroom", data, {
     headers: {
       "auth-token": localStorage.getItem(ACCESS_TOKEN_NAME),
@@ -84,3 +85,13 @@ export const setPassword = async (id, password) => {
   });
   return res;
 };
+
+export const getIdRoomInfo = async (idRoom) => {
+  const res = await axios.get(API_BASE_URL + "/room/getroombyidroom/" + idRoom, {
+    headers: {
+      "auth-token": localStorage.getItem(ACCESS_TOKEN_NAME),
+      "Content-Type": "application/json",
+    },
+  });
+  return res;
+}
