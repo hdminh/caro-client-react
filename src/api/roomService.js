@@ -6,12 +6,12 @@ export const joinRoom = async (id, password) => {
   let data;
   if (password) {
      data = {
-      idRoom: Number(id),
+      idRoom: id,
       password: password
     };
   } else {
     data = {
-      idRoom: Number(id)
+      idRoom: id
     };
   }
   console.log(data)
