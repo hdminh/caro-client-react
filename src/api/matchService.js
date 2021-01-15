@@ -24,7 +24,7 @@ export const createMatch = async(id) => {
   export const playMatch = async (matchId, i) => {
     const data = {
       id: matchId,
-      x_axis:Math.round(i/20),
+      x_axis:Math.floor(i/20),
       y_axis:i%20
     }
     return await axios
@@ -35,11 +35,14 @@ export const createMatch = async(id) => {
           'Content-Type': 'application/json'
         }
       }).then((response) =>{
-        return response.data;
-      }).catch((err) => {
-        return err;
+         if(response.data)
+          return response.data;
+        return response;
       });
-  }
+      // }).catch((err) => {
+      //   return err;
+      // });
+    }
 
   export const chatMatch = async (matchId, {name,message}) => {
     console.log("user"+name);
