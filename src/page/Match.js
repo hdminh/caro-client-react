@@ -4,6 +4,7 @@ import '../App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
@@ -27,8 +28,11 @@ function Match(props) {
   const [status, setStatus] = useState("play");
   const [infor,setInfor]=useState({});
   const [openDialog,setOpenDialog]=useState(false);
+  const [openDialogEnd,setOpenDialogEnd]=useState(false);
+
   const [timeCount, settimeCount] = useState(60);
   const [oponentMove, setOponentMove] = useState();
+  let History = useHistory();
   let { id } = useParams();
 
   // const matchId= props.match.params.id;
@@ -63,15 +67,18 @@ function Match(props) {
       setStatus("playing");
     } else if (JSON.stringify(winner) == getUserId()) {
       setStatus("you win");
+      endMatch("you win");
     } else {
       setStatus("you lose");
+      endMatch("you lose");
+
     }
   };
   // const handleEndMatch = (message)
 
   ioClient.off("force_disconnect");
   ioClient.on("force_disconnect", () => {
-    endMatchSock();
+    endMatch("");
   });
   ioClient.off("opponent_move");
   ioClient.on("opponent_move", (data) => {
@@ -79,13 +86,15 @@ function Match(props) {
     setCanMove(true);
   },[])
   ioClient.off("time_out");
-  ioClient.on("time_out", (data) => {
+  ioClient.on("time_out", async(data) => {
     console.log(data);
     console.log(JSON.stringify(data));
     if (data == 1) {
-      setStatus("Bạn đa thắng vì đối thủ đã hết thời gian đánh");
+      await setStatus("Bạn đa thắng vì đối thủ đã hết thời gian đánh");
+      endMatch(status);
     } else {
-      setStatus("Bạn đa thua vì đã hết thời gian đánh");
+      await setStatus("Bạn đa thua vì đã hết thời gian đánh");
+      endMatch(status);
     }
   });
 
@@ -95,7 +104,6 @@ function Match(props) {
     console.log("on draw request");
     setOpenDialog(true);
    
-
   })
 
   const handleAgreeDraw=async () =>{
@@ -103,30 +111,38 @@ function Match(props) {
     const result = await DrawMatch(id);
     if(result._id){
       setStatus("Draw");
-    endMatchSock();
+      endMatch("Draw");
     }
   }
 
   const handleDraw = async() =>{
     drawMatchSock();
   }
+  const endMatch=(status) =>{
+    setStatus(status);
+    setOpenDialogEnd(true);
+  }
 
-
-
-
-
+  const handleEnd=()=>{
+    endMatchSock();
+    History.push("/");
+  }
   const handleClick = async (i) => {
     if (canMove) {
       //call api handle status play
       const result = await playMatch(id, i);
       console.log(result);
-      updateStatusWinner(result.winner);
 
       //emit to oppenent
-      if (!result.error) {
+      if (result._id) {
+        console.log("khong loi");
+        updateStatusWinner(result.winner);
         handleClickInMatch(i);
         handleNewMove(i);
         setCanMove(false);
+      }else{
+        console.log(result.error);
+        setStatus(result.error.message);
       }
     }
   };
@@ -154,9 +170,12 @@ function Match(props) {
   return (
     <Container component="main">
       <Dialog openDialog={openDialog} setOpenDialog={setOpenDialog} setResult={handleAgreeDraw} content={"Đối thủ xin cầu hòa"}/>
+      <Dialog openDialog={openDialogEnd} setOpenDialog={setOpenDialogEnd} setResult={handleEnd} content={"Trận đâu đã kết thúc."+status}/>
+
+      
       <CssBaseline />
       <Typography component="h1" variant="h5">
-        TRAN DAU
+      TRẬN ĐẤU 
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={8}>

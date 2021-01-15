@@ -23,6 +23,7 @@ import UserOnline from '../components/UserOnline';
 function Room(props) {
   const [players, setPlayers] = useState([]);
   const [roomId, setRoomId] = useState();
+  // const [ready,setReady]= useState();
   let room_Id = props.match.params.id;
 
   const setListUser = () => {
