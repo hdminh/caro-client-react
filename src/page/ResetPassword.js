@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import axios from "axios";
+import "../../../style.css"
 axios.defaults.timeout = 60000;
 const ForgetPassword = (props) => {
   const [username, setUsername] = useState("");
