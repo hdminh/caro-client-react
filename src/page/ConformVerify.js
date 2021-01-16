@@ -6,7 +6,7 @@ const ForgetPassword = (props) => {
   let id = new URLSearchParams(window.location.search).get("id");
   let userid = new URLSearchParams(window.location.search).get("userid");
   axios
-    .post("http://localhost:8080/api/v1/auth/handleforgetpassword", {
+    .post("https://caro-client-react.vercel.app/api/v1/auth/handleforgetpassword", {
       id,
       userid,
     })
