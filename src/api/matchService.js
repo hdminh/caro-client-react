@@ -24,8 +24,8 @@ export const createMatch = async(id) => {
   export const playMatch = async (matchId, i) => {
     const data = {
       id: matchId,
-      x_axis:Math.floor(i/20),
-      y_axis:i%20
+      x_axis:i%20,
+      y_axis:Math.floor(i/20)
     }
     return await axios
       .post(API_BASE_URL + "/match/play",

@@ -94,7 +94,7 @@ function App(props) {
                   setLoading={setLoading}
                 />
               </PrivateRoute>
-              <PrivateRoute path="/match/:id">
+              <PrivateRoute path="/match/:id/:ishost">
                 <Match
                   setError={setError}
                   title={title}

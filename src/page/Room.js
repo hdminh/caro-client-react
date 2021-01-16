@@ -14,7 +14,7 @@ import { createMatch } from '../api/matchService';
 import { newRoomPlayerSock, inviteRoomSock} from '../socket/roomSocket';
 import { ioClient } from '../socket/index';
 import Button from '@material-ui/core/Button';
-import { getCurrentUser, getUserToken } from '../api/authService';
+import { getCurrentUser, getUserId, getUserToken } from '../api/authService';
 import UserOnline from '../components/UserOnline';
 
 // import io from 'socket.io-client';
@@ -23,13 +23,20 @@ import UserOnline from '../components/UserOnline';
 function Room(props) {
   const [players, setPlayers] = useState([]);
   const [roomId, setRoomId] = useState();
-  // const [ready,setReady]= useState();
+  const [ready,setReady]= useState("Ready");
+
   let room_Id = props.match.params.id;
+  let isHost=false;
 
   const setListUser = () => {
     getRoomInfo(room_Id)
       .then((result) => {
         if (result.status < 400) {
+          console.log(getUserId()+JSON.stringify(result.data.room.player_1));
+          if(JSON.stringify(result.data.room.player_1) === getUserId()){
+            isHost=true;
+            setReady("Start game");
+          }
           setPlayers(result.data.players);
           setRoomId(result.data.room.idRoom);
           // room_Id=result.data.room._id;
@@ -52,14 +59,15 @@ function Room(props) {
       }
     });
     ioClient.on("start_game", (data) => {
+
       console.log(data);
-      props.history.push("/match/" + data);
+      props.history.push("/match/" + data+"/"+isHost);
       // setPlayers([]);
     });
     ioClient.on("new_room_player", (data) => {
       setListUser();
       console.log(data);
-
+      
 
     });
   }, []);
@@ -72,6 +80,7 @@ function Room(props) {
 
   const handleReady = () => {
     // const userToken=getUserToken();
+    setReady("Watting for start");
     joinMatchSock(roomId, getCurrentUser());
   }
   const handleInvite=(enemyId)=>{
@@ -108,7 +117,7 @@ function Room(props) {
               color="primary"
               onClick={handleReady}
             >
-              Ready
+              {ready}
     </Button>}
 
 
